@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
-import { BotanicalArt } from "@/components/botanical-art";
 import { cn } from "@/lib/utils";
 
 export function PageHero({
@@ -8,14 +7,16 @@ export function PageHero({
   eyebrow,
   image,
   children,
+  className,
 }: {
-  title: string;
+  title: ReactNode;
   eyebrow?: string;
-  image?: { src: string; alt: string; position?: string };
+  image?: { src: string; alt: string; position?: string; caption?: string; sizes?: string };
   children: ReactNode;
+  className?: string;
 }) {
   return (
-    <header data-intro className={cn("page-hero", image && "page-hero-split")}>
+    <header data-intro className={cn("page-hero", image && "page-hero-split", className)}>
       {!image && <>
         {/* <BotanicalArt className="page-hero-art page-hero-art-left" /> */}
         {/* <BotanicalArt variant="coffee" className="page-hero-art page-hero-art-right" /> */}
@@ -32,7 +33,8 @@ export function PageHero({
       </div>
       {image && (
         <div data-intro-item className="page-hero-photo">
-          <Image src={image.src} alt={image.alt} fill priority sizes="(min-width: 768px) 26rem, (min-width: 448px) 24rem, calc(100vw - 40px)" className="object-cover" style={{ objectPosition: image.position }} />
+          <Image src={image.src} alt={image.alt} fill priority sizes={image.sizes ?? "(min-width: 768px) 26rem, (min-width: 448px) 24rem, calc(100vw - 40px)"} className="object-cover" style={{ objectPosition: image.position }} />
+          {image.caption && <span className="page-hero-caption">{image.caption}</span>}
         </div>
       )}
     </header>

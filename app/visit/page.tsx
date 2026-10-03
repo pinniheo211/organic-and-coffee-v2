@@ -47,33 +47,6 @@ export default function VisitPage() {
           </div>
         </div>
       </section>
-
-      <section id="message" className="garden-section garden-wash scroll-mt-24">
-        <BotanicalArt className="garden-art garden-art-right" />
-        <div data-reveal-group className="mx-auto max-w-[76rem] px-5 py-16 md:py-24">
-          <p className="eyebrow">A note to the floor</p>
-          <h2 className="mt-4 font-serif text-4xl tracking-[-0.03em]">Write to the shop</h2>
-          <p className="mt-4 mb-8 max-w-[48ch] text-ink/70">
-            Questions about a product, a booking for a group, or anything the floor can answer.
-          </p>
-          <EnquiryForm intent="visit" />
-        </div>
-      </section>
-
-      <section>
-        <div data-reveal-group className="mx-auto max-w-[76rem] px-5 py-16 md:py-20">
-          <p className="eyebrow">Work</p>
-          <h2 className="mt-4 font-serif text-4xl tracking-[-0.03em]">Work here</h2>
-          <p className="mt-4 max-w-[54ch] text-ink/70">
-            The shop hires for the long term, casual or part time, across the floor and the café.
-            Send a resume to Bronwyn at{" "}
-            <a className="link" href={`mailto:${email}`}>
-              {email}
-            </a>
-            .
-          </p>
-        </div>
-      </section>
     </article>
   );
 }

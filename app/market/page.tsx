@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
+import { Apple, Boxes, Leaf } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { BotanicalArt } from "@/components/botanical-art";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { departments } from "@/lib/site";
+import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
 
 export const metadata: Metadata = {
   title: "Market",
@@ -11,120 +12,111 @@ export const metadata: Metadata = {
     "High quality produce from local and interstate growers, plus bulk, packaged and free-from foods at the Organic Market in Stirling. Shop in store or online.",
 };
 
+const ranges = [
+  {
+    title: "Fresh from the season",
+    description:
+      "Certified organic and biodynamic fruit and vegetables from Adelaide Hills growers and further afield.",
+    icon: Apple,
+  },
+  {
+    title: "Good things for the pantry",
+    description:
+      "Grains, nuts, seeds and flours sold by weight, alongside everyday grocery and free-from favourites.",
+    icon: Boxes,
+  },
+  {
+    title: "Chosen with care",
+    description:
+      "Organic dairy, free-range options, drinks and personal care, selected to the same thoughtful standard.",
+    icon: Leaf,
+  },
+] as const;
+
+const marketGallery = [
+  { src: "/assets/img1.png", alt: "A fresh grain and vegetable bowl with greens" },
+  { src: "/assets/img2.png", alt: "A bowl of fruit, coconut and seasonal ingredients" },
+  { src: "/assets/IMG_5756.JPG", alt: "Seasonal berries, fruit and wholefoods" },
+  { src: "/assets/img3.jpg", alt: "Fresh juice made with market produce" },
+  { src: "/assets/juice1.jpg", alt: "A freshly pressed juice" },
+  { src: "/assets/break1.jpg", alt: "A café dish made with fresh ingredients" },
+  { src: "/assets/break3.jpg", alt: "Seasonal food served at the café" },
+  { src: "/assets/shop.jpg", alt: "The Organic Market in Stirling" },
+] as const;
+
 export default function MarketPage() {
   return (
-    <article>
-      <PageHero title="Market" image={{ src: "/assets/store.jpg", alt: "The shop floor, with wine, bulk olives and rows of packaged food" }}>
-        Discover the high quality produce sourced directly from both local and interstate growers.
-      </PageHero>
+    <article data-story-motion className="market-page">
+      {/* <PageHero
+        title={<><span>A good food</span><span>market.</span></>}
+        eyebrow="Organic Market · Stirling"
+        className="market-page-hero"
+        image={{
+          src: "/assets/store.jpg",
+          alt: "The shop floor, with wine, bulk olives and rows of packaged food",
+          caption: "A good food market in the Adelaide Hills · Since 1982",
+          sizes: "(min-width: 1280px) 52rem, (min-width: 768px) 56vw, calc(100vw - 40px)",
+        }}
+      >
+        Discover produce sourced from local and interstate growers, and a generous range of whole
+        foods, pantry staples and regional finds.
+      </PageHero> */}
 
-      <section>
-        <div data-pair className="mx-auto grid max-w-5xl items-center gap-8 px-5 py-10 md:grid-cols-[0.85fr_1.15fr] md:gap-12 md:py-12">
-          <div className="relative order-last mx-auto h-52 w-full max-w-sm overflow-hidden md:order-first md:h-64">
-            <Image
-              src="/assets/shop.jpg"
-              alt="The market front at 5 Druid Avenue"
-              fill
-              sizes="(min-width: 448px) 24rem, calc(100vw - 40px)"
-              className="object-cover"
-            />
+      <section aria-labelledby="market-ranges-title" className="market-ranges-section">
+        <div className="mx-auto max-w-[76rem] px-5 py-16 md:py-24">
+          <div className="market-section-heading" data-reveal>
+            <div>
+              <p className="eyebrow">A little of everything, chosen well</p>
+              <h2 id="market-ranges-title" className="mt-3 max-w-[18ch] font-serif text-4xl leading-tight text-balance md:text-6xl">
+                Good food starts with good ingredients
+              </h2>
+            </div>
+            <div className="max-w-md">
+              <p className="text-sm leading-relaxed text-pretty text-ink/70 md:text-base">
+                Our shelves bring together the things you cook with every day and the local discoveries
+                that make a meal memorable.
+              </p>
+              <Link href="/shop" className="btn mt-5">
+                Shop online
+              </Link>
+            </div>
           </div>
-          <div>
-            <p className="eyebrow">On the floor</p>
-            <h2 className="mt-4 font-serif text-4xl tracking-[-0.03em] md:text-5xl">
-              Browse our market
-            </h2>
-            <p className="mt-5 max-w-[46ch] text-ink/70">
-              The store is packed with gourmet goods, whole foods, fresh fruit and vegetables, and
-              sweet treats. With hundreds of lines on the shelves, it is a visual feast to walk and
-              look.
-            </p>
-            <p className="mt-4 max-w-[46ch] text-ink/70">
-              We endeavour to cater for all dietary food groups, diets and personal needs, with a
-              wide range that is certified organic, preservative free and without genetically
-              modified organisms.
-            </p>
+
+          <ImageAutoSlider images={[...marketGallery]} className="mt-10 md:mt-14" />
+
+          <div className="market-range-list mt-8 md:mt-12" data-shelf>
+            {ranges.map(({ title, description, icon: Icon }) => (
+              <article key={title} className="market-range-summary">
+                <Icon size={25} strokeWidth={1.4} aria-hidden="true" className="text-ember" />
+                <h3 className="mt-4 font-serif text-2xl leading-tight text-balance md:text-3xl">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-pretty text-ink/70 md:text-base">{description}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="garden-section garden-wash">
+      <section className="market-care-section">
         <BotanicalArt className="garden-art garden-art-left" />
-        <div data-pair className="mx-auto grid max-w-5xl items-center gap-8 px-5 py-10 md:grid-cols-[1.3fr_0.7fr] md:gap-12 md:py-12">
-          <div>
-            <p className="eyebrow">Good food</p>
-            <h2 className="mt-4 font-serif text-4xl tracking-[-0.03em] md:text-5xl">
-              Passionate for good food
-            </h2>
-            <p className="mt-5 max-w-[46ch] text-ink/70">
-              Enjoy healthy, nutritious, seasonal, fresh certified organic and biodynamic fruit,
-              vegetables and foods, along with a wide range of local and regional products.
+        <div className="mx-auto grid max-w-[76rem] gap-10 px-5 py-14 md:grid-cols-[0.8fr_1.2fr] md:items-center md:gap-16 md:py-20">
+          <div data-reveal>
+            <p className="eyebrow">More than a shop</p>
+            <h2 className="mt-3 font-serif text-4xl leading-tight text-balance md:text-5xl">A market with its roots in the Hills</h2>
+            <p className="mt-5 max-w-[43ch] text-sm leading-relaxed text-pretty text-ink/75 md:text-base">
+              {departments[0].detail} We also stock bulk staples, packaged foods for a range of
+              dietary needs, and products from producers we are glad to support.
             </p>
           </div>
-          <div className="relative mx-auto h-48 w-full max-w-xs overflow-hidden md:h-56">
-            <Image
-              src="/assets/IMG_5756.JPG"
-              alt="Seasonal fruit and wholefoods from the market, served in the café"
-              fill
-              sizes="(min-width: 768px) 20rem, (min-width: 360px) 20rem, calc(100vw - 40px)"
-              className="object-cover"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="mx-auto grid max-w-5xl items-center gap-8 px-5 py-10 md:grid-cols-[1.1fr_0.9fr] md:gap-12 md:py-14">
-          <div data-reveal-group className="max-w-[40rem]">
-            <p className="eyebrow">Click and collect</p>
-            <h2 className="mt-4 font-serif text-4xl tracking-[-0.03em] md:text-5xl">
-              Browse our market or shop online
-            </h2>
-            <p className="mt-5 max-w-[54ch] text-ink/70">
-              There are fresh, bulk and packaged foods, including a comprehensive selection of
-              vegan, raw and free-from options for dietary preferences. Everything sold in the shop
-              is also online, with home delivery and click and collect.
-            </p>
-            <p className="mt-6">
-              <Link className="btn" href="/shop">Shop online</Link>
-            </p>
-          </div>
-          <div data-gallery className="mx-auto grid w-full max-w-sm grid-cols-2 gap-3">
-            <Frame
-              src="/assets/660f6cbe607c46603ec10f5c.png"
-              alt="The Organic Market delivery van, for click and collect and home delivery"
-              fit="contain"
-              className="col-span-2 h-32"
-            />
-            <Frame src="/assets/img2.png" alt="A wholefood bowl from the café kitchen" />
-            <Frame src="/assets/img3.jpg" alt="Fresh juices made from market produce" />
+          <div className="market-department-strip" data-shelf>
+            {departments.slice(0, 4).map((department) => (
+              <div key={department.name} className="market-department">
+                <h3 className="font-serif text-xl">{department.name}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink/65">{department.summary}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
     </article>
-  );
-}
-
-function Frame({
-  src,
-  alt,
-  fit = "cover",
-  className,
-}: {
-  src: string;
-  alt: string;
-  fit?: "cover" | "contain";
-  className?: string;
-}) {
-  return (
-    <div className={cn("relative h-36 overflow-hidden bg-recess", className)}>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={fit === "contain" ? "24rem" : "12rem"}
-        className={fit === "contain" ? "object-contain p-6" : "object-cover"}
-      />
-    </div>
   );
 }

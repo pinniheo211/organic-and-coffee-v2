@@ -145,8 +145,8 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
       </nav>
       <div data-menu-item className="grid shrink-0 gap-3 border-t border-current/20 pt-6">
         <Link href="/login" onNavigate={onNavigate} className="btn w-full">Login</Link>
-        <Link href="/register" onNavigate={onNavigate} className="btn-line w-full">Create account</Link>
-        <Link href="/shop" onNavigate={onNavigate} className="btn-ghost min-h-11 justify-center">Shop online</Link>
+
+        <Link href="/shop" onNavigate={onNavigate} className="btn-line min-h-11 justify-center">Shop online</Link>
       </div>
     </dialog>
   );

@@ -19,7 +19,6 @@ export function Footer() {
           </div>
 
           <nav aria-label="Footer" className="footer-nav">
-            <h3 className="mb-5 text-sm font-medium">Explore</h3>
             <ul className="grid gap-3">
               {nav.map((item) => (
                 <li key={item.href}>
@@ -27,7 +26,6 @@ export function Footer() {
                 </li>
               ))}
               <li><Link href="/shop" className="footer-link">Shop online</Link></li>
-              <li><Link href="/login" className="footer-link">My account</Link></li>
             </ul>
           </nav>
 
@@ -65,7 +63,7 @@ export function Footer() {
 
         <div className="footer-signature" aria-hidden="true">
           <span>Organic Market</span>
-          <BotanicalArt className="footer-sprig" />
+          {/* <BotanicalArt className="footer-sprig" /> */}
         </div>
         <div className="footer-bottom">
           <p>Organic Market & Café</p>

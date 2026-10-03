@@ -15,9 +15,9 @@ export const address = {
 export const nav = [
   { href: "/market", label: "Market" },
   { href: "/cafe", label: "Café" },
-  { href: "/cafe/menu", label: "Café menu" },
+  { href: "/about", label: "About Us" },
   // { href: "/supply", label: "Supply" },
-  { href: "/visit", label: "Visit" },
+  // { href: "/visit", label: "Visit" },
 ] as const;
 
 export const hours = [
@@ -72,33 +72,6 @@ export const departments = [
     detail:
       "The café is vegetarian first, with vegan, dairy-free, gluten-free and sugar-free choices. Salads, soups and a special are made each day. Bruschettas, focaccias and croissants are assembled to order.",
     note: "Coffee is organic, from D'Angelo, with Paris Creek organic milk or a substitute.",
-  },
-] as const;
-
-export const history = [
-  {
-    year: "1982",
-    text: "The Windram family opened the market as an outlet for organic growers.",
-  },
-  {
-    year: "1988",
-    text: "Grahame Murray, his wife Caroline, and his sister Corrine bought the business.",
-  },
-  {
-    year: "1992",
-    text: "The café opened in the adjoining shops.",
-  },
-  {
-    year: "1995",
-    text: "The export company Organics Australia was established.",
-  },
-  {
-    year: "2014",
-    text: "The online store and home delivery started.",
-  },
-  {
-    year: "Today",
-    text: "Bronwyn Griffiths runs the business on the same buying philosophy.",
   },
 ] as const;
 

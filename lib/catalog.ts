@@ -26,7 +26,7 @@ export const products: Product[] = [
     price: 650,
     unit: "each",
     summary: "Certified organic, from the produce stand when they are in season.",
-    image: "/assets/artichoke.webp",
+    // image: "/assets/artichoke.webp",
   },
   {
     slug: "hills-apples",

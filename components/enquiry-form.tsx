@@ -34,8 +34,8 @@ export function EnquiryForm({ intent }: EnquiryFormProps) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="max-w-2xl" noValidate={false}>
-      <div className="grid gap-5 md:grid-cols-2">
+    <form onSubmit={onSubmit} className="enquiry-form max-w-3xl" noValidate={false}>
+      <div className="enquiry-form-fields grid gap-x-6 gap-y-5 md:grid-cols-2">
         <Field id={`${base}-name`} label="Your name" name="name" autoComplete="name" required />
         {supply ? (
           <Field
@@ -56,26 +56,31 @@ export function EnquiryForm({ intent }: EnquiryFormProps) {
         />
         <Field id={`${base}-phone`} label="Phone" name="phone" type="tel" autoComplete="tel" />
       </div>
-      <div className="mt-5">
-        <label htmlFor={`${base}-message`} className="block text-[0.95rem]">
+      <div className="enquiry-field mt-6">
+        <label htmlFor={`${base}-message`} className="enquiry-label">
           {supply ? "What you need, and how often" : "Message"}
+          <span className="enquiry-required" aria-hidden="true">
+            Required
+          </span>
         </label>
         <textarea
           id={`${base}-message`}
           name="message"
           required
           rows={6}
-          className="input"
+          className="input enquiry-control"
         />
       </div>
-      <button className="btn mt-6" type="submit">
-        {supply ? "Email this order enquiry" : "Email the shop"}
-      </button>
-      <p className="mt-4 max-w-[48ch] text-[0.95rem] text-ink/75" role="status">
-        {noted
-          ? `If your email app did not open, write directly to ${email}.`
-          : `This opens your email app, addressed to ${email}.`}
-      </p>
+      <div className="enquiry-form-footer mt-6">
+        <button className="btn enquiry-submit" type="submit">
+          {supply ? "Email this order enquiry" : "Email the shop"}
+        </button>
+        <p className="enquiry-form-note" role="status">
+          {noted
+            ? `If your email app did not open, write directly to ${email}.`
+            : `This opens your email app, addressed to ${email}.`}
+        </p>
+      </div>
     </form>
   );
 }
@@ -96,9 +101,14 @@ function Field({
   required?: boolean;
 }) {
   return (
-    <div>
-      <label htmlFor={id} className="block text-[0.95rem]">
+    <div className="enquiry-field">
+      <label htmlFor={id} className="enquiry-label">
         {label}
+        {required ? (
+          <span className="enquiry-required" aria-hidden="true">
+            Required
+          </span>
+        ) : null}
       </label>
       <input
         id={id}
@@ -106,7 +116,7 @@ function Field({
         type={type}
         autoComplete={autoComplete}
         required={required}
-        className="input"
+        className="input enquiry-control"
       />
     </div>
   );

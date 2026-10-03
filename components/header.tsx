@@ -22,10 +22,10 @@ export function Header() {
           <span className="block font-serif text-[1.65rem] leading-none tracking-[-0.03em] md:text-[1.85rem]">
             Organic Market
           </span>
-          <span className="mt-1 block text-[0.78rem] text-ink/55">and café, Stirling</span>
+          <span className="mt-1 block text-[0.78rem] text-ink/55 lg:text-sm lg:text-ink/75">and café, Stirling</span>
         </Link>
 
-        <nav className="hidden items-center justify-center gap-7 md:flex" aria-label="Primary">
+        <nav className="hidden items-center justify-center gap-4 md:flex lg:gap-7" aria-label="Primary">
           {nav.map((item) => {
             const active = pathname === item.href;
             return (
@@ -33,10 +33,10 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`text-[0.72rem] tracking-[0.16em] uppercase ${
+                className={`inline-flex min-h-11 items-center whitespace-nowrap text-xs font-medium tracking-[0.16em] uppercase lg:text-sm ${
                   active
                     ? "text-ink underline decoration-ink underline-offset-[0.45rem]"
-                    : "text-ink/50 hover:text-ink"
+                    : "text-ink/85 hover:text-ember"
                 }`}
               >
                 {item.label}

@@ -52,11 +52,13 @@ export function OrderConfirmation() {
       </p>
       {order.note ? <p className="mt-4 text-ink/70">{order.note}</p> : null}
       <ul className="mt-8 divide-y divide-line border-y border-line">
-        {order.lines.map((line) => (
-          <li key={line.name} className="flex justify-between gap-4 py-3">
+        {order.lines.map((line, index) => (
+          <li key={`${line.name}-${index}`} className="flex justify-between gap-4 py-3">
             <span>
               {line.name}
               <span className="text-ink/50"> × {line.qty}</span>
+              {line.details?.length ? <span className="mt-1 block text-sm text-ink/55">{line.details.join(" · ")}</span> : null}
+              {line.note ? <span className="mt-1 block text-sm text-ink/55">Kitchen note: {line.note}</span> : null}
             </span>
             <span>{formatPrice(line.price * line.qty)}</span>
           </li>

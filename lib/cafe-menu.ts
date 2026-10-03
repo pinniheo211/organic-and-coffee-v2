@@ -42,7 +42,7 @@ export const cafeMenu: CafeMenuSection[] = [
     id: "lunch",
     title: "Lunch",
     note: "Available all day; salad bowl from 11am",
-    imageSrc: "/assets/cafe-salad-bowl.jpg",
+    imageSrc: "/assets/cafe-salad-bowl.png",
     imageAlt: "The café's salad bowl with roasted pumpkin and fresh greens",
     items: [
       { name: "Soup: mushroom & lentil", description: "Daily soup served with bread.", price: "from 14.50", dietary: ["DF", "GF", "NF", "Vegan"] },

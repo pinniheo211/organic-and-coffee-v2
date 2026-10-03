@@ -13,7 +13,10 @@ const bowls = [
 
 ] as const;
 
-const CENTER = 2;
+// Keep a full sequence on either side. Recycling happens outside the visible
+// five positions, while the next bowl is already moving in from the right.
+const carouselBowls = [...bowls, ...bowls, ...bowls];
+const CENTER = bowls.length + 2;
 const STEP_DURATION = 0.9;
 const STEP_PAUSE = 1.15;
 
@@ -21,7 +24,7 @@ function look(position: number, slot: number) {
   return {
     x: position * slot,
     scale: position === 0 ? 1.12 : Math.abs(position) === 1 ? 0.82 : 0.68,
-    opacity: Math.abs(position) === 2 ? 0.58 : 1,
+    opacity: Math.abs(position) > 2 ? 0 : Math.abs(position) === 2 ? 0.58 : 1,
     zIndex: position === 0 ? 2 : 1,
   };
 }
@@ -46,12 +49,17 @@ export function HeroBowlCarousel() {
     });
     const slotWidth = () => (Number.parseFloat(getComputedStyle(ordered[0]).width) || 0) * 0.82;
     const place = (slot: number) => {
-      ordered.forEach((item, index) => gsap.set(item, look(index - CENTER, slot)));
+      ordered.forEach((item, index) => gsap.set(item, { ...look(index - CENTER, slot), xPercent: -50 }));
     };
+    place(slotWidth());
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      place(slotWidth());
-      return;
+      const resizeObserver = new ResizeObserver(() => place(slotWidth()));
+      resizeObserver.observe(element);
+      return () => {
+        resizeObserver.disconnect();
+        gsap.set(slots, { clearProps: "all" });
+      };
     }
 
     let timeline: gsap.core.Timeline | undefined;
@@ -59,6 +67,13 @@ export function HeroBowlCarousel() {
     let token = 0;
     let ready = false;
     let disposed = false;
+    let visible = false;
+
+    const syncPlayback = () => {
+      const play = visible && !document.hidden;
+      timeline?.paused(!play);
+      pause?.paused(!play);
+    };
 
     const build = () => {
       if (!ready) return;
@@ -70,27 +85,40 @@ export function HeroBowlCarousel() {
       place(slot);
 
       const runStep = () => {
-        const distance = slotWidth();
+        const distance = slot;
         const departing = ordered[0];
         timeline = gsap.timeline({
           defaults: { ease: "power2.inOut", duration: STEP_DURATION },
           onComplete: () => {
             if (current !== token) return;
             ordered.push(ordered.shift()!);
-            gsap.set(departing, look(2, distance));
+            gsap.set(departing, look(ordered.length - CENTER - 1, distance));
+            gsap.set(slots, { willChange: "auto" });
             pause = gsap.delayedCall(STEP_PAUSE, runStep);
+            syncPlayback();
           },
         });
         ordered.forEach((item, index) => {
+          if (index - CENTER >= -2 && index - CENTER <= 3) {
+            gsap.set(item, { willChange: "transform, opacity" });
+          }
           timeline?.to(item, look(index - CENTER - 1, distance), 0);
         });
+        syncPlayback();
       };
 
       pause = gsap.delayedCall(STEP_PAUSE, runStep);
+      syncPlayback();
     };
 
     const resizeObserver = new ResizeObserver(build);
     resizeObserver.observe(element);
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      syncPlayback();
+    });
+    visibilityObserver.observe(element);
+    document.addEventListener("visibilitychange", syncPlayback);
     void Promise.all(images.map((image) => image.decode().catch(() => undefined))).then(() => {
       if (disposed) return;
       ready = true;
@@ -101,6 +129,8 @@ export function HeroBowlCarousel() {
       disposed = true;
       token += 1;
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
+      document.removeEventListener("visibilitychange", syncPlayback);
       timeline?.kill();
       pause?.kill();
       gsap.set(slots, { clearProps: "all" });
@@ -109,19 +139,19 @@ export function HeroBowlCarousel() {
 
   return (
     <div ref={stage} className="hero-bowl-stage" aria-label="A selection of café dishes">
-      {bowls.map((bowl, index) => {
+      {carouselBowls.map((bowl, index) => {
         const position = index - CENTER;
         return (
           <div
-            key={bowl.src}
+            key={`${bowl.src}-${index}`}
             ref={(node) => {
               slotRefs.current[index] = node;
             }}
             className="hero-bowl-item"
             style={{
               left: "50%",
-              transform: `translateX(-50%) scale(${position === 0 ? 1.12 : Math.abs(position) === 1 ? 0.82 : 0.68})`,
-              opacity: Math.abs(position) === 2 ? 0.58 : 1,
+              transform: `translateX(calc(-50% + var(--bowl-size) * ${position * 0.82})) scale(${position === 0 ? 1.12 : Math.abs(position) === 1 ? 0.82 : 0.68})`,
+              opacity: Math.abs(position) > 2 ? 0 : Math.abs(position) === 2 ? 0.58 : 1,
               zIndex: position === 0 ? 2 : 1,
             }}
             aria-hidden="true"
@@ -133,7 +163,7 @@ export function HeroBowlCarousel() {
               height={800}
               preload={index === CENTER}
               loading={index === CENTER ? undefined : "eager"}
-              sizes="(min-width: 768px) 58vw, 64vw"
+              sizes="(min-width: 1104px) 640px, (min-width: 768px) 58vw, (min-width: 469px) 384px, 82vw"
               className="h-auto w-full object-contain"
             />
           </div>

@@ -16,7 +16,7 @@ export type PlacedOrder = {
   fulfilment: "collect" | "delivery";
   street: string;
   note: string;
-  lines: { name: string; qty: number; price: number }[];
+  lines: { name: string; qty: number; price: number; details?: string[]; note?: string; kind?: "shop" | "cafe" }[];
   total: number;
 };
 
@@ -26,10 +26,17 @@ export function CheckoutForm() {
   const { ready, lines, clear } = useCart();
   const [fulfilment, setFulfilment] = useState<"collect" | "delivery">("collect");
 
-  const rows = lines.flatMap((line) => {
+  const rows = lines.reduce<PlacedOrder["lines"]>((rows, line) => {
+    if ("kind" in line && line.kind === "cafe") {
+      rows.push({ name: line.name, qty: line.qty, price: line.price, details: line.details, note: line.note, kind: "cafe" });
+      return rows;
+    }
     const product = getProduct(line.slug);
-    return product ? [{ name: product.name, qty: line.qty, price: product.price }] : [];
-  });
+    if (product) rows.push({ name: product.name, qty: line.qty, price: product.price, details: [], note: "", kind: "shop" });
+    return rows;
+  }, []);
+  const hasCafeItems = rows.some((row) => row.kind === "cafe");
+  const activeFulfilment = hasCafeItems ? "collect" : fulfilment;
   const total = rows.reduce((sum, row) => sum + row.price * row.qty, 0);
 
   if (!ready) return <p className="text-ink/50">Loading the basket.</p>;
@@ -46,8 +53,8 @@ export function CheckoutForm() {
       name: String(data.get("name") ?? ""),
       email: String(data.get("email") ?? ""),
       phone: String(data.get("phone") ?? ""),
-      fulfilment,
-      street: fulfilment === "delivery" ? String(data.get("street") ?? "") : address.full,
+      fulfilment: activeFulfilment,
+      street: activeFulfilment === "delivery" ? String(data.get("street") ?? "") : address.full,
       note: String(data.get("note") ?? ""),
       lines: rows,
       total,
@@ -61,7 +68,7 @@ export function CheckoutForm() {
     <form onSubmit={onSubmit} className="grid gap-12 md:grid-cols-[1.1fr_0.9fr]">
       <div className="grid gap-5">
         <p className="text-ink/60">
-          This is a preview. Nothing is charged, and the shop is not notified.
+          This is a preview. Nothing is charged, and no order is sent to the shop or café.
         </p>
         <Field id={`${base}-name`} label="Name" name="name" autoComplete="name" required />
         <Field id={`${base}-email`} label="Email" name="email" type="email" autoComplete="email" required />
@@ -73,7 +80,7 @@ export function CheckoutForm() {
               type="radio"
               name="fulfilment"
               value="collect"
-              checked={fulfilment === "collect"}
+              checked={activeFulfilment === "collect"}
               onChange={() => setFulfilment("collect")}
             />
             <span>Click and collect at {address.full}</span>
@@ -83,13 +90,16 @@ export function CheckoutForm() {
               type="radio"
               name="fulfilment"
               value="delivery"
-              checked={fulfilment === "delivery"}
+              checked={activeFulfilment === "delivery"}
               onChange={() => setFulfilment("delivery")}
+              disabled={hasCafeItems}
             />
-            <span>Home delivery</span>
+            <span className={hasCafeItems ? "text-ink/45" : undefined}>
+              Home delivery{hasCafeItems ? " · café items must be collected" : ""}
+            </span>
           </label>
         </fieldset>
-        {fulfilment === "delivery" ? (
+        {activeFulfilment === "delivery" ? (
           <Field id={`${base}-street`} label="Delivery address" name="street" autoComplete="street-address" required />
         ) : null}
         <label className="block" htmlFor={`${base}-note`}>
@@ -103,15 +113,17 @@ export function CheckoutForm() {
       <aside className="h-fit border border-line bg-white p-6">
         <h2 className="font-serif text-2xl tracking-[-0.03em]">Basket</h2>
         <ul className="mt-4 divide-y divide-line">
-          {rows.map((row) => (
-            <li key={row.name} className="flex justify-between gap-4 py-3">
-              <span>
-                {row.name}
-                <span className="text-ink/50"> × {row.qty}</span>
-              </span>
-              <span>{formatPrice(row.price * row.qty)}</span>
-            </li>
-          ))}
+              {rows.map((row, index) => (
+                <li key={`${row.kind}-${row.name}-${index}`} className="flex justify-between gap-4 py-3">
+                  <span>
+                    {row.name}
+                    <span className="text-ink/50"> × {row.qty}</span>
+                    {row.details?.length ? <span className="mt-1 block text-sm text-ink/55">{row.details.join(" · ")}</span> : null}
+                    {row.note ? <span className="mt-1 block text-sm text-ink/55">Kitchen note: {row.note}</span> : null}
+                  </span>
+                  <span>{formatPrice(row.price * row.qty)}</span>
+                </li>
+              ))}
         </ul>
         <p className="mt-4 flex justify-between font-serif text-2xl">
           <span>Total</span>

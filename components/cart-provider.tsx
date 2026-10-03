@@ -5,13 +5,26 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 
 const storageKey = "organic-market-basket";
 
-type CartLine = { slug: string; qty: number };
+export type CafeCartLine = {
+  kind: "cafe";
+  slug: string;
+  qty: number;
+  name: string;
+  price: number;
+  image: string;
+  details: string[];
+  note: string;
+};
+
+export type CartLine = { slug: string; qty: number } | CafeCartLine;
+type NewCafeCartLine = Omit<CafeCartLine, "kind">;
 
 type CartValue = {
   ready: boolean;
   lines: CartLine[];
   count: number;
   add: (slug: string, qty?: number) => void;
+  addCafe: (line: NewCafeCartLine) => void;
   setQty: (slug: string, qty: number) => void;
   remove: (slug: string) => void;
   clear: () => void;
@@ -29,7 +42,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
       try {
         const parsed = JSON.parse(saved) as CartLine[];
         if (Array.isArray(parsed)) {
-          setLines(parsed.filter((line) => line.qty > 0 && getProduct(line.slug)));
+        setLines(parsed.filter((line): line is CartLine => {
+          if (!line || typeof line.slug !== "string" || !Number.isFinite(line.qty) || line.qty < 1) return false;
+          if ("kind" in line && line.kind === "cafe") {
+            return typeof line.name === "string" && Number.isFinite(line.price) && Array.isArray(line.details);
+          }
+          return Boolean(getProduct(line.slug));
+        }));
         }
       } catch {
         window.localStorage.removeItem(storageKey);
@@ -53,6 +72,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
           const found = current.find((line) => line.slug === slug);
           if (!found) return [...current, { slug, qty }];
           return current.map((line) => (line.slug === slug ? { ...line, qty: line.qty + qty } : line));
+        });
+      },
+      addCafe(line) {
+        setLines((current) => {
+          const found = current.find((item) => item.slug === line.slug);
+          if (!found) return [...current, { ...line, kind: "cafe" }];
+          return current.map((item) => (item.slug === line.slug ? { ...item, qty: item.qty + line.qty } : item));
         });
       },
       setQty(slug, qty) {

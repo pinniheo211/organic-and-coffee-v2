@@ -29,6 +29,17 @@ export function PageMotion({ children }: { children: ReactNode }) {
       });
 
       function revealOnScroll(element: Element, index = 0) {
+        // Reveal each paragraph independently, without also moving its parent.
+        if (element.matches("[data-story-copy]")) {
+          Array.from(element.children).forEach((child, childIndex) => {
+            if (child.matches("ul, ol")) {
+              Array.from(child.children).forEach((item, itemIndex) => revealOnScroll(item, itemIndex));
+            } else {
+              revealOnScroll(child, childIndex);
+            }
+          });
+          return;
+        }
         if (animations.has(element)) return;
         animations.set(element, gsap.from(element, {
           ...reveal,
@@ -42,7 +53,36 @@ export function PageMotion({ children }: { children: ReactNode }) {
         Array.from(group.children).forEach((element, index) => revealOnScroll(element, index));
       });
 
+      container.querySelectorAll("[data-story-motion] [data-story-photo], [data-story-motion] .page-hero-photo").forEach((frame) => {
+        const image = frame.querySelector("img");
+        if (!image) return;
+        animations.set(image, gsap.from(image, {
+          scale: 1.1,
+          duration: 1.2,
+          ease: "power3.out",
+          clearProps: "transform,willChange",
+          onStart: () => { gsap.set(image, { willChange: "transform" }); },
+          scrollTrigger: { trigger: frame, start: "top 88%", once: true },
+        }));
+      });
+
       return () => animations.clear();
+    }, root);
+
+    motion.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+      container.querySelectorAll("[data-story-motion] .garden-art").forEach((art) => {
+        gsap.fromTo(art, { yPercent: 8, rotation: -3 }, {
+          yPercent: -8,
+          rotation: 3,
+          ease: "none",
+          scrollTrigger: {
+            trigger: art.closest("section"),
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.6,
+          },
+        });
+      });
     }, root);
 
     // Keyboard navigation must reveal a focused control immediately.

@@ -4,15 +4,32 @@ import { useCart } from "@/components/cart-provider";
 import { formatPrice, getProduct } from "@/lib/catalog";
 import Link from "next/link";
 
+type BasketRow = {
+  slug: string;
+  qty: number;
+  kind: "shop" | "cafe";
+  product: { name: string; price: number; unit: string };
+  details: string[];
+  note: string;
+};
+
 export function BasketView() {
   const { ready, lines, setQty, remove } = useCart();
 
   if (!ready) return <p className="text-ink/50">Loading the basket.</p>;
 
-  const rows = lines.flatMap((line) => {
+  const rows = lines.reduce<BasketRow[]>((rows, line) => {
+    if ("kind" in line && line.kind === "cafe") {
+      rows.push({
+        ...line,
+        product: { name: line.name, price: line.price, unit: "serving" },
+      });
+      return rows;
+    }
     const product = getProduct(line.slug);
-    return product ? [{ ...line, product }] : [];
-  });
+    if (product) rows.push({ ...line, kind: "shop", product, details: [], note: "" });
+    return rows;
+  }, []);
 
   if (rows.length === 0) {
     return (
@@ -35,12 +52,18 @@ export function BasketView() {
         {rows.map((row) => (
           <li key={row.slug} className="grid gap-4 py-6 md:grid-cols-[1fr_auto_auto] md:items-center">
             <div>
-              <Link href={`/shop/${row.slug}`} className="font-serif text-2xl tracking-[-0.03em]">
-                {row.product.name}
-              </Link>
+              {row.kind === "cafe" ? (
+                <p className="font-serif text-2xl tracking-[-0.03em]">{row.product.name}</p>
+              ) : (
+                <Link href={`/shop/${row.slug}`} className="font-serif text-2xl tracking-[-0.03em]">
+                  {row.product.name}
+                </Link>
+              )}
               <p className="mt-1 text-ink/55">
                 {formatPrice(row.product.price)} · {row.product.unit}
               </p>
+              {row.details.length ? <p className="mt-2 text-sm text-ink/60">{row.details.join(" · ")}</p> : null}
+              {row.note ? <p className="mt-1 text-sm text-ink/60">Kitchen note: {row.note}</p> : null}
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center border border-line">
