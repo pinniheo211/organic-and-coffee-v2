@@ -594,18 +594,29 @@ textarea.enquiry-control {
 
 .hills-grid {
   display: grid;
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
 .hills-tile {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-height: 21rem;
+  overflow: hidden;
   background: var(--paper);
+  border-top: 1px solid color-mix(in srgb, var(--forest) 30%, transparent);
 }
 
-.hills-photo { position: relative; min-height: 19rem; overflow: hidden; }
+.hills-tile:nth-child(1) { grid-column: span 7; }
+.hills-tile:nth-child(2) { grid-column: span 5; }
+.hills-tile:nth-child(3) { grid-column: span 5; }
+.hills-tile:nth-child(4) { grid-column: span 7; }
+.hills-tile:nth-child(2) .hills-photo,
+.hills-tile:nth-child(3) .hills-photo { grid-column: 2; grid-row: 1; }
+.hills-tile:nth-child(2) .hills-copy,
+.hills-tile:nth-child(3) .hills-copy { grid-column: 1; grid-row: 1; }
+
+.hills-photo { position: relative; min-height: 21rem; overflow: hidden; background: var(--forest); }
 .hills-copy { display: flex; flex-direction: column; padding: clamp(1.25rem, 2.2vw, 2rem); }
 .hills-copy h3 { margin-top: 0.75rem; font-size: clamp(1.75rem, 2.6vw, 2.5rem); line-height: 1.05; color: var(--forest); }
 .hills-copy .eyebrow { color: var(--ember); font-size: 0.625rem; }
@@ -626,14 +637,20 @@ textarea.enquiry-control {
 }
 
 @media (max-width: 1023px) {
-  .hills-tile:nth-child(even) .hills-photo { grid-column: 2; grid-row: 1; }
-  .hills-tile:nth-child(even) .hills-copy { grid-column: 1; grid-row: 1; }
+  .hills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hills-tile,
+  .hills-tile:nth-child(n) { grid-column: auto; grid-template-columns: 1fr; }
+  .hills-tile:nth-child(n) .hills-photo,
+  .hills-tile:nth-child(n) .hills-copy { grid-column: auto; grid-row: auto; }
+  .hills-photo { min-height: 16rem; }
 }
 
-@media (min-width: 1024px) {
-  .hills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .hills-tile:nth-child(n + 3) .hills-photo { grid-column: 2; grid-row: 1; }
-  .hills-tile:nth-child(n + 3) .hills-copy { grid-column: 1; grid-row: 1; }
+@media (max-width: 639px) {
+  .hills-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .hills-tile,
+  .hills-tile:nth-child(n) { min-height: 0; }
+  .hills-photo { min-height: 15rem; }
+  .hills-copy { min-height: 16rem; }
 }
 
 @media (max-width: 479px) {

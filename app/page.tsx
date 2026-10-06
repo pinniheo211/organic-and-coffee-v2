@@ -154,7 +154,7 @@ export default function HomePage() {
 
       <section className="garden-section garden-wash">
         <div className="mx-auto max-w-[76rem] px-5 py-16 md:py-24">
-          <div className="relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-reveal>
+          <div className="hills-intro relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-hills-intro>
             {/* <BotanicalArt variant="hills" className="section-heading-art" /> */}
             <div className="max-w-xl">
               <h2 className="font-serif text-4xl tracking-[-0.03em] md:text-6xl">Find us in the Hills</h2>
@@ -165,7 +165,7 @@ export default function HomePage() {
               <ArrowUpRight size={18} aria-hidden="true" />
             </Link>
           </div>
-          <div className="hills-grid mt-10" data-gallery>
+          <div className="hills-grid mt-10" data-hills-gallery>
             {gallery.map((photo) => (
               <article key={photo.src} className="hills-tile">
                 <div className="hills-photo">
