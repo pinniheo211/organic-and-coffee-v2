@@ -7,6 +7,7 @@ import { ViewTransition, useLayoutEffect, useRef, type ReactNode } from "react";
 
 // One shared rhythm for page headings, text blocks, images and galleries.
 const reveal = { opacity: 0, y: 28, duration: 0.8, ease: "power3.out", clearProps: "opacity,transform" };
+const gentleReveal = { opacity: 0, y: 18, duration: 1, ease: "power2.out", clearProps: "opacity,transform,willChange" };
 const groupSelector = "[data-pair], [data-gallery], [data-shelf], [data-reveal-group]";
 
 export function PageMotion({ children }: { children: ReactNode }) {
@@ -24,7 +25,12 @@ export function PageMotion({ children }: { children: ReactNode }) {
     motion.add("(prefers-reduced-motion: no-preference)", () => {
       container.querySelectorAll("[data-intro]").forEach((intro) => {
         intro.querySelectorAll("[data-intro-item]").forEach((item, index) => {
-          animations.set(item, gsap.from(item, { ...reveal, delay: index * 0.1 }));
+          const gentlePage = Boolean(item.closest(".cafe-page, .market-page"));
+          animations.set(item, gsap.from(item, {
+            ...(gentlePage ? gentleReveal : reveal),
+            delay: index * (gentlePage ? 0.12 : 0.1),
+            onStart: () => { if (gentlePage) gsap.set(item, { willChange: "transform, opacity" }); },
+          }));
         });
       });
 
@@ -41,10 +47,12 @@ export function PageMotion({ children }: { children: ReactNode }) {
           return;
         }
         if (animations.has(element)) return;
+        const gentlePage = Boolean(element.closest(".cafe-page, .market-page"));
         animations.set(element, gsap.from(element, {
-          ...reveal,
-          delay: Math.min(index * 0.1, 0.2),
-          scrollTrigger: { trigger: element, start: "top 88%", once: true },
+          ...(gentlePage ? gentleReveal : reveal),
+          delay: Math.min(index * (gentlePage ? 0.12 : 0.1), gentlePage ? 0.36 : 0.2),
+          onStart: () => { if (gentlePage) gsap.set(element, { willChange: "transform, opacity" }); },
+          scrollTrigger: { trigger: element, start: gentlePage ? "top 92%" : "top 88%", once: true },
         }));
       }
 
@@ -56,13 +64,14 @@ export function PageMotion({ children }: { children: ReactNode }) {
       container.querySelectorAll("[data-story-motion] [data-story-photo], [data-story-motion] .page-hero-photo").forEach((frame) => {
         const image = frame.querySelector("img");
         if (!image) return;
+        const gentlePage = Boolean(frame.closest(".cafe-page, .market-page"));
         animations.set(image, gsap.from(image, {
-          scale: 1.1,
-          duration: 1.2,
-          ease: "power3.out",
+          scale: gentlePage ? 1.04 : 1.1,
+          duration: gentlePage ? 1.45 : 1.2,
+          ease: gentlePage ? "power2.out" : "power3.out",
           clearProps: "transform,willChange",
           onStart: () => { gsap.set(image, { willChange: "transform" }); },
-          scrollTrigger: { trigger: frame, start: "top 88%", once: true },
+          scrollTrigger: { trigger: frame, start: gentlePage ? "top 92%" : "top 88%", once: true },
         }));
       });
 

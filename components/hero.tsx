@@ -1,7 +1,11 @@
-import Link from "next/link";
-import { HeroBowlCarousel } from "@/components/hero-bowl-carousel";
+"use client";
+
+import { useRef } from "react";
+import { HeroBowlCarousel, HERO_DISH_NAMES, INITIAL_HERO_DISH } from "@/components/hero-bowl-carousel";
 
 export function Hero() {
+  const caption = useRef<HTMLParagraphElement>(null);
+
   return (
     <section
       data-hero
@@ -14,8 +18,17 @@ export function Hero() {
         >
           Organic & whole foods
         </h1>
-        <p data-intro-item className="mt-2 font-serif text-2xl italic text-ink/75 md:text-4xl">
-          in the heart of Stirling
+        <p ref={caption} data-intro-item className="mt-2 grid font-serif text-2xl italic text-ink/75 md:text-4xl">
+          {HERO_DISH_NAMES.map((name) => (
+            <span
+              key={name}
+              className="col-start-1 row-start-1"
+              style={{ opacity: name === INITIAL_HERO_DISH ? 1 : 0 }}
+              aria-hidden={name !== INITIAL_HERO_DISH}
+            >
+              {name}
+            </span>
+          ))}
         </p>
         {/* <p data-intro-item className="hero-actions mx-auto mt-8 grid w-full gap-3">
           <Link href="/market" className="btn">
@@ -27,7 +40,7 @@ export function Hero() {
         </p> */}
       </div>
 
-      <HeroBowlCarousel />
+      <HeroBowlCarousel captionRef={caption} />
     </section>
   );
 }

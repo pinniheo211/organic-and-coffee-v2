@@ -1,28 +1,25 @@
 import { Hero } from "@/components/hero";
-import { BotanicalArt } from "@/components/botanical-art";
 import { HomeScroll } from "@/components/home-scroll";
 import { HoursTable } from "@/components/hours-table";
 import { PortfolioScrollGrid } from "@/components/ui/portfolio-scroll-grid";
+import { RevealImageMask } from "@/components/ui/reveal-image-mask";
 import { address, mapsUrl, phoneDisplay, phoneHref } from "@/lib/site";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Bird, Handshake, Sprout } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 const reasons = [
   {
     title: "Good for the planet",
     text: "We choose sustainable, seasonal products and say no to the industrial food system.",
-    icon: Sprout,
   },
   {
     title: "Kind to animals",
     text: "We look for ethically reared and free-range products, alongside organic and biodynamic foods.",
-    icon: Bird,
   },
   {
     title: "Backing local producers",
     text: "Wherever possible, we partner with local suppliers and growers from the Adelaide Hills and beyond.",
-    icon: Handshake,
   },
 ] as const;
 
@@ -103,43 +100,41 @@ export default function HomePage() {
         </div>
       </section> */}
 
-      <section aria-labelledby="true-cost-title" className="border-y border-line bg-paper">
-        <div className="mx-auto max-w-[76rem] px-5 py-16 md:py-24">
-          <div className="grid gap-6 border-b border-line pb-10 md:grid-cols-2 md:items-end md:gap-12 md:pb-12" data-pair>
-            <div>
-              <p className="eyebrow mb-4">The values behind our choices</p>
-              <h2 id="true-cost-title" className="font-serif text-5xl leading-none text-balance text-ember md:text-7xl">
-                The true cost
-              </h2>
-            </div>
-            <div className="max-w-xl">
-              <p className="font-serif text-2xl leading-tight text-pretty md:text-3xl">
-                Better choices for the planet, animal welfare and our health can cost a little more.
-              </p>
-              <p className="mt-4 max-w-[48ch] text-sm leading-relaxed text-ink/70 md:text-base">
-                That is our ethos: supporting responsible producers and saying no to the industrial
-                food system.
-              </p>
-            </div>
+      <section aria-labelledby="true-cost-title" className="bg-paper">
+        <div className="mx-auto grid max-w-[76rem] gap-8 px-5 py-16 md:grid-cols-2 md:gap-x-16 md:gap-y-10 md:py-24">
+          <div>
+            <h2 id="true-cost-title" className="font-serif text-5xl leading-tight text-balance text-ember md:text-7xl">
+              The true cost
+            </h2>
+            <p className="mt-5 max-w-xl font-serif text-2xl leading-snug text-pretty md:text-3xl">
+              Better choices for the planet, animal welfare and our health can cost a little more.
+            </p>
+            <p className="mt-4 max-w-xl leading-relaxed text-pretty text-ink/70">
+              That is our ethos: supporting responsible producers and saying no to the industrial food system.
+            </p>
           </div>
-          <ul className="grid divide-y divide-line pt-2 md:grid-cols-3 md:divide-x md:divide-y-0 md:pt-10" data-shelf>
-            {reasons.map(({ title, text, icon: Icon }) => (
-              <li key={title} className="grid grid-cols-[2.5rem_1fr] gap-x-4 py-7 md:block md:px-8 md:py-0 md:first:pl-0 md:last:pr-0 lg:px-10">
-                <Icon size={36} strokeWidth={1.25} aria-hidden="true" className="text-ember md:mb-6" />
-                <div>
-                  <h3 className="font-serif text-3xl leading-tight text-balance text-ember">{title}</h3>
-                  <p className="mt-3 max-w-[38ch] text-sm leading-relaxed text-pretty text-ink/70 md:text-base">{text}</p>
+
+          <RevealImageMask
+            src="/assets/store.jpg"
+            alt="Wooden shelves and locally sourced goods inside the Organic Market in Stirling"
+            sizes="(min-width: 1216px) 576px, (min-width: 768px) 50vw, 100vw"
+            className="aspect-square md:col-start-2 md:row-span-2 md:row-start-1 md:aspect-auto"
+          />
+
+          <div className="md:col-start-1">
+            <dl className="divide-y divide-line border-y border-line">
+              {reasons.map(({ title, text }) => (
+                <div key={title} className="grid gap-2 py-5 sm:grid-cols-2 sm:gap-6">
+                  <dt className="font-serif text-xl leading-snug text-balance text-ember">{title}</dt>
+                  <dd className="text-sm leading-relaxed text-pretty text-ink/70">{text}</dd>
                 </div>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-10 border-t border-line pt-8 text-center md:mt-14 md:pt-10" data-reveal>
-            <p className="font-serif text-3xl text-balance text-ember md:text-4xl">From our market to your café table</p>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-pretty text-ink/70 md:text-base">
+              ))}
+            </dl>
+            <p className="mt-6 text-sm leading-relaxed text-pretty text-ink/70">
+              <span className="text-ink">From our market to your café table.</span>{" "}
               The same care carries into our café: simple, wholesome food with a vegetarian focus,
               made with seasonal produce.
             </p>
-            <span aria-hidden="true" className="mx-auto mt-6 block h-10 w-px bg-ember/30" />
           </div>
         </div>
       </section>

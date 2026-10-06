@@ -16,7 +16,7 @@
 
 @theme inline {
   --font-sans: var(--font-dm-sans), "Segoe UI", sans-serif;
-  --font-serif: var(--font-instrument), Georgia, serif;
+  --font-serif: var(--font-coconat), Georgia, serif;
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-field: var(--field);
@@ -735,10 +735,6 @@ textarea.enquiry-control {
 .market-ranges-section { background: var(--paper); }
 .market-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
 .market-section-heading > p { margin-bottom: 0.35rem; }
-.market-range-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
-.market-range-summary { padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 0; border-right: 1px solid var(--line); }
-.market-range-summary:first-child { padding-left: 0; }
-.market-range-summary:last-child { padding-right: 0; border-right: 0; }
 
 .image-auto-slider-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
 .image-auto-slider-controls .eyebrow { color: var(--ember); }
@@ -755,7 +751,6 @@ textarea.enquiry-control {
 .image-auto-slider-sequence { display: flex; width: max-content; gap: clamp(0.75rem, 1.5vw, 1.25rem); padding-right: clamp(0.75rem, 1.5vw, 1.25rem); }
 .image-auto-slider-card { position: relative; width: clamp(17rem, 27vw, 23rem); aspect-ratio: 1.28; flex: none; overflow: hidden; background: var(--recess); }
 .image-auto-slider-card img { transition: transform 350ms ease-out; }
-.market-range-summary h3 { color: var(--forest); }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .image-auto-slider-card:hover img { transform: scale(1.035); }
@@ -776,12 +771,33 @@ textarea.enquiry-control {
 .market-online-section .btn:hover { background: white; }
 .market-delivery-image { border-left: 1px solid rgb(247 246 243 / 24%); padding-left: 1.5rem; }
 
-.cafe-kitchen-section { background: var(--paper); }
-.cafe-kitchen-heading { max-width: 53rem; }
-.cafe-kitchen-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
-.cafe-kitchen-note { padding: 2rem clamp(1rem, 3vw, 2.5rem) 0; border-right: 1px solid var(--line); }
-.cafe-kitchen-note:first-child { padding-left: 0; }
-.cafe-kitchen-note:last-child { padding-right: 0; border-right: 0; }
+.scroll-image-hero { position: relative; overflow: clip; background: var(--paper); }
+.scroll-banner-heading { padding-block: clamp(3rem, 7svh, 5rem); }
+.scroll-banner-heading h1 { font-size: clamp(3.5rem, 8vw, 8rem); line-height: 1.05; }
+.scroll-image-stage { position: relative; height: 170svh; }
+.scroll-image-sticky {
+  position: sticky;
+  top: var(--scroll-header-h, var(--header-h));
+  height: calc(100svh - var(--scroll-header-h, var(--header-h)));
+  overflow: hidden;
+}
+.scroll-image-photo { position: absolute; inset: 0; overflow: hidden; transform-origin: center; }
+.scroll-banner-message { font-size: clamp(3rem, 7vw, 7rem); line-height: 1.12; }
+.market-scroll-hero { --market-hero-accent: var(--forest); }
+.market-scroll-hero .scroll-banner-heading h1 { color: var(--market-hero-accent); }
+
+@media (max-width: 767px) {
+  .scroll-banner-heading { padding-block: 2.5rem; }
+  .scroll-banner-heading h1 { font-size: clamp(3.25rem, 13vw, 4.5rem); }
+  .scroll-image-stage { height: 145svh; }
+  .scroll-banner-message { font-size: clamp(2.25rem, 10vw, 3.5rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-image-stage { height: auto; }
+  .scroll-image-sticky { position: relative; top: auto; height: 70svh; }
+}
+
 .cafe-gallery-section { background: var(--sage); }
 .cafe-gallery { display: grid; grid-template-columns: 1.25fr 0.8fr; grid-template-rows: repeat(2, minmax(10rem, 15rem)); gap: 0.75rem; }
 .cafe-gallery-photo { position: relative; overflow: hidden; background: var(--recess); }
@@ -807,24 +823,8 @@ textarea.enquiry-control {
   .page-hero.market-page-hero h1 { max-width: none; font-size: clamp(3.5rem, 13vw, 4.8rem); }
   .page-hero.market-page-hero .page-hero-photo { height: clamp(18rem, 78vw, 25rem); }
   .market-section-heading { align-items: start; flex-direction: column; gap: 1rem; }
-  .market-range-list { grid-template-columns: 1fr; }
-  .market-range-summary,
-  .market-range-summary:first-child,
-  .market-range-summary:last-child { display: grid; grid-template-columns: 2rem 1fr; column-gap: 1rem; padding: 1.25rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
-  .market-range-summary svg { grid-row: span 2; margin-top: 0.25rem; }
-  .market-range-summary h3 { margin-top: 0; }
-  .market-range-summary p { grid-column: 2; margin-top: 0.45rem; }
   .image-auto-slider-card { width: min(78vw, 21rem); }
   .market-delivery-image { border-left: 0; border-top: 1px solid rgb(247 246 243 / 24%); padding: 1rem 0 0; }
-  .cafe-kitchen-grid { grid-template-columns: 1fr; }
-  .cafe-kitchen-note,
-  .cafe-kitchen-note:first-child,
-  .cafe-kitchen-note:last-child { display: grid; grid-template-columns: 2rem 1fr; column-gap: 1rem; padding: 1.25rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
-  .cafe-kitchen-note h3,
-  .cafe-kitchen-note p { grid-column: 2; }
-  .cafe-kitchen-note svg { grid-row: span 2; margin-top: 0.25rem; }
-  .cafe-kitchen-note h3 { margin-top: 0; }
-  .cafe-kitchen-note p { margin-top: 0.4rem; }
   .cafe-gallery { grid-template-columns: 1fr 0.8fr; grid-template-rows: 12rem 9rem; gap: 0.55rem; }
   .cafe-photo-side { margin-right: 0; }
   .cafe-photo-detail { margin-left: 0; }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { DM_Sans, Instrument_Serif } from "next/font/google";
+import { DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { CartProvider } from "@/components/cart-provider";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -13,11 +14,13 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-instrument",
+const coconat = localFont({
+  src: [
+    { path: "./fonts/coconat/Coconat-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/coconat/Coconat-Demi.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/coconat/Coconat-Bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-coconat",
   display: "swap",
 });
 
@@ -32,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${instrument.variable} h-full`}>
+    <html lang="en" className={`${dmSans.variable} ${coconat.variable} h-full`}>
       <body className="min-h-full bg-paper font-sans text-[1.05rem] leading-relaxed text-ink antialiased">
         <a className="skip-link" href="#content">
           Skip to content

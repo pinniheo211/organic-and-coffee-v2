@@ -1,22 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
 
 const bowls = [
-  { src: "/assets/product1.webp", alt: "Bircher muesli with strawberries" },
-  { src: "/assets/product4.webp", alt: "Banana and coconut bowl" },
-  { src: "/assets/product2.webp", alt: "Avocado toast" },
-  { src: "/assets/product3.webp", alt: "A bowl of berries, orange and lemon" },
-  { src: "/assets/product5.webp", alt: "Grain salad with roasted pumpkin" },
-
+  { src: "/assets/product1.webp", alt: "Bircher muesli with strawberries", name: "Bircher muesli" },
+  { src: "/assets/product4.webp", alt: "Banana and coconut bowl", name: "Banana & coconut" },
+  { src: "/assets/product2.webp", alt: "Avocado toast", name: "Avocado toast" },
+  { src: "/assets/product3.webp", alt: "A bowl of berries, orange and lemon", name: "Berries & citrus" },
+  { src: "/assets/product5.webp", alt: "Grain salad with roasted pumpkin", name: "Roasted pumpkin salad" },
 ] as const;
 
 // Keep a full sequence on either side. Recycling happens outside the visible
 // five positions, while the next bowl is already moving in from the right.
 const carouselBowls = [...bowls, ...bowls, ...bowls];
 const CENTER = bowls.length + 2;
+export const INITIAL_HERO_DISH = carouselBowls[CENTER].name;
+export const HERO_DISH_NAMES = bowls.map((bowl) => bowl.name);
 const STEP_DURATION = 0.9;
 const STEP_PAUSE = 1.15;
 
@@ -29,7 +30,7 @@ function look(position: number, slot: number) {
   };
 }
 
-export function HeroBowlCarousel() {
+export function HeroBowlCarousel({ captionRef }: { captionRef: RefObject<HTMLParagraphElement | null> }) {
   const stage = useRef<HTMLDivElement>(null);
   const slotRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -41,6 +42,15 @@ export function HeroBowlCarousel() {
     if (slots.length === 0) return;
 
     const ordered = [...slots];
+    const captions = Array.from(captionRef.current?.querySelectorAll("span") ?? []);
+    const captionFor = (item: HTMLDivElement) => captions[slots.indexOf(item) % bowls.length];
+    const placeCaption = (item: HTMLDivElement) => {
+      const active = captionFor(item);
+      captions.forEach((caption) => {
+        gsap.set(caption, { opacity: caption === active ? 1 : 0, y: 0, willChange: "auto" });
+        caption.setAttribute("aria-hidden", String(caption !== active));
+      });
+    };
     const images = slots
       .map((slot) => slot.querySelector("img"))
       .filter((image): image is HTMLImageElement => image !== null);
@@ -50,6 +60,7 @@ export function HeroBowlCarousel() {
     const slotWidth = () => (Number.parseFloat(getComputedStyle(ordered[0]).width) || 0) * 0.82;
     const place = (slot: number) => {
       ordered.forEach((item, index) => gsap.set(item, { ...look(index - CENTER, slot), xPercent: -50 }));
+      placeCaption(ordered[CENTER]);
     };
     place(slotWidth());
 
@@ -59,6 +70,7 @@ export function HeroBowlCarousel() {
       return () => {
         resizeObserver.disconnect();
         gsap.set(slots, { clearProps: "all" });
+        placeCaption(slots[CENTER]);
       };
     }
 
@@ -94,6 +106,7 @@ export function HeroBowlCarousel() {
             ordered.push(ordered.shift()!);
             gsap.set(departing, look(ordered.length - CENTER - 1, distance));
             gsap.set(slots, { willChange: "auto" });
+            gsap.set(captions, { willChange: "auto" });
             pause = gsap.delayedCall(STEP_PAUSE, runStep);
             syncPlayback();
           },
@@ -104,6 +117,18 @@ export function HeroBowlCarousel() {
           }
           timeline?.to(item, look(index - CENTER - 1, distance), 0);
         });
+        const outgoing = captionFor(ordered[CENTER]);
+        const incoming = captionFor(ordered[CENTER + 1]);
+        if (outgoing && incoming) {
+          timeline
+            .set([outgoing, incoming], { willChange: "transform, opacity" }, 0)
+            .to(outgoing, { opacity: 0, y: -10, duration: 0.3 }, 0.15)
+            .set(outgoing, { attr: { "aria-hidden": "true" } }, 0.45)
+            .set(incoming, { attr: { "aria-hidden": "false" } }, 0.45)
+            .fromTo(incoming, { opacity: 0, y: 10 }, {
+              opacity: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false,
+            }, 0.45);
+        }
         syncPlayback();
       };
 
@@ -134,8 +159,9 @@ export function HeroBowlCarousel() {
       timeline?.kill();
       pause?.kill();
       gsap.set(slots, { clearProps: "all" });
+      placeCaption(slots[CENTER]);
     };
-  }, []);
+  }, [captionRef]);
 
   return (
     <div ref={stage} className="hero-bowl-stage" aria-label="A selection of café dishes">

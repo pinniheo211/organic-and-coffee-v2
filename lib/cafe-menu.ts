@@ -20,7 +20,7 @@ export const cafeMenu: CafeMenuSection[] = [
     id: "breakfast",
     title: "Breakfast",
     note: "All day",
-    imageSrc: "/assets/cafe-shakshouka.jpg",
+    imageSrc: "/assets/cafe-shakshouka.png",
     imageAlt: "Shakshouka served with toasted sourdough at the café",
     items: [
       { name: "Shakshouka", description: "Egg baked in spicy capsicum and tomato sauce, with toasted sourdough. Vegan option with avocado, no egg.", price: "24.75", dietary: ["Vegan option"] },

@@ -1,37 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Apple, Boxes, Leaf } from "lucide-react";
-import { PageHero } from "@/components/page-hero";
 import { BotanicalArt } from "@/components/botanical-art";
 import { departments } from "@/lib/site";
 import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
+import { ScrollImageHero } from "@/components/scroll-image-hero";
 
 export const metadata: Metadata = {
   title: "Market",
   description:
     "High quality produce from local and interstate growers, plus bulk, packaged and free-from foods at the Organic Market in Stirling. Shop in store or online.",
 };
-
-const ranges = [
-  {
-    title: "Fresh from the season",
-    description:
-      "Certified organic and biodynamic fruit and vegetables from Adelaide Hills growers and further afield.",
-    icon: Apple,
-  },
-  {
-    title: "Good things for the pantry",
-    description:
-      "Grains, nuts, seeds and flours sold by weight, alongside everyday grocery and free-from favourites.",
-    icon: Boxes,
-  },
-  {
-    title: "Chosen with care",
-    description:
-      "Organic dairy, free-range options, drinks and personal care, selected to the same thoughtful standard.",
-    icon: Leaf,
-  },
-] as const;
 
 const marketGallery = [
   { src: "/assets/img1.png", alt: "A fresh grain and vegetable bowl with greens" },
@@ -47,20 +25,16 @@ const marketGallery = [
 export default function MarketPage() {
   return (
     <article data-story-motion className="market-page">
-      {/* <PageHero
-        title={<><span>A good food</span><span>market.</span></>}
+      <ScrollImageHero
+        title="A good food market"
         eyebrow="Organic Market · Stirling"
-        className="market-page-hero"
-        image={{
-          src: "/assets/store.jpg",
-          alt: "The shop floor, with wine, bulk olives and rows of packaged food",
-          caption: "A good food market in the Adelaide Hills · Since 1982",
-          sizes: "(min-width: 1280px) 52rem, (min-width: 768px) 56vw, calc(100vw - 40px)",
-        }}
+        image={{ src: "/assets/store.jpg", alt: "Shelves of pantry goods and fresh produce inside the Organic Market" }}
+        lines={["Browse", "our Market."]}
+        action={{ href: "/shop", label: "Shop online" }}
+        className="market-scroll-hero"
       >
-        Discover produce sourced from local and interstate growers, and a generous range of whole
-        foods, pantry staples and regional finds.
-      </PageHero> */}
+        Discover produce from local growers, wholefood staples and regional finds for everyday meals.
+      </ScrollImageHero>
 
       <section aria-labelledby="market-ranges-title" className="market-ranges-section">
         <div className="mx-auto max-w-[76rem] px-5 py-16 md:py-24">
@@ -84,19 +58,10 @@ export default function MarketPage() {
 
           <ImageAutoSlider images={[...marketGallery]} className="mt-10 md:mt-14" />
 
-          <div className="market-range-list mt-8 md:mt-12" data-shelf>
-            {ranges.map(({ title, description, icon: Icon }) => (
-              <article key={title} className="market-range-summary">
-                <Icon size={25} strokeWidth={1.4} aria-hidden="true" className="text-ember" />
-                <h3 className="mt-4 font-serif text-2xl leading-tight text-balance md:text-3xl">{title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-pretty text-ink/70 md:text-base">{description}</p>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
 
-      <section className="market-care-section">
+      {/* <section className="market-care-section">
         <BotanicalArt className="garden-art garden-art-left" />
         <div className="mx-auto grid max-w-[76rem] gap-10 px-5 py-14 md:grid-cols-[0.8fr_1.2fr] md:items-center md:gap-16 md:py-20">
           <div data-reveal>
@@ -116,7 +81,7 @@ export default function MarketPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </article>
   );
 }
