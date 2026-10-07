@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { EnquiryForm } from "@/components/enquiry-form";
 import { HoursTable } from "@/components/hours-table";
 import { PageHero } from "@/components/page-hero";
-import { BotanicalArt } from "@/components/botanical-art";
 import { ContactLinks } from "@/components/contact-links";
-import { address, email, mapsUrl } from "@/lib/site";
+import { address, mapsUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Visit",

@@ -11,12 +11,13 @@ export interface ScrollImageHeroProps {
   eyebrow: string;
   image: { src: string; alt: string };
   lines: readonly [string, string];
-  action: { href: string; label: string };
+  action?: { href: string; label: string };
   children: ReactNode;
+  titlePlacement?: "above" | "overlay";
   className?: string;
 }
 
-export function ScrollImageHero({ title, eyebrow, image, lines, action, children, className }: ScrollImageHeroProps) {
+export function ScrollImageHero({ title, eyebrow, image, lines, action, children, titlePlacement = "above", className }: ScrollImageHeroProps) {
   const root = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const photo = useRef<HTMLDivElement>(null);
@@ -72,24 +73,37 @@ export function ScrollImageHero({ title, eyebrow, image, lines, action, children
 
   return (
     <header ref={root} className={`scroll-image-hero ${className ?? ""}`}>
-      <div data-intro className="scroll-banner-heading mx-auto max-w-[76rem] px-5 text-center">
-        <p data-intro-item className="eyebrow">{eyebrow}</p>
-        <h1 data-intro-item className="mt-4 font-serif text-balance text-ember">{title}</h1>
-      </div>
+      {titlePlacement === "above" && (
+        <div data-intro className="scroll-banner-heading mx-auto max-w-[76rem] px-5 text-center">
+          <p data-intro-item className="eyebrow">{eyebrow}</p>
+          <h1 data-intro-item className="mt-4 font-serif text-balance text-ember">{title}</h1>
+        </div>
+      )}
 
       <div ref={stage} className="scroll-image-stage">
         <div className="scroll-image-sticky">
           <div ref={photo} className="scroll-image-photo">
             <Image src={image.src} alt={image.alt} fill preload sizes="100vw" className="object-cover" />
             <div ref={shade} className="absolute inset-0 bg-black/45" aria-hidden="true" />
-            <div className="absolute inset-0 flex items-center justify-center px-5">
-              <h2 ref={headline} className="scroll-banner-message font-serif text-center font-normal text-white">
-                {lines.map((line) => (
-                  <span key={line} className="block overflow-hidden">
-                    <span data-scroll-line className="block">{line}</span>
-                  </span>
-                ))}
-              </h2>
+            <div className={`absolute inset-0 flex items-center justify-center px-5 ${titlePlacement === "overlay" ? "scroll-banner-overlay" : ""}`}>
+              {titlePlacement === "overlay" && <p className="scroll-banner-overlay-eyebrow">{eyebrow}</p>}
+              {titlePlacement === "overlay" ? (
+                <h1 ref={headline} className="scroll-banner-message font-serif text-center font-normal text-white">
+                  {lines.map((line) => (
+                    <span key={line} className="block overflow-hidden">
+                      <span data-scroll-line className="block">{line}</span>
+                    </span>
+                  ))}
+                </h1>
+              ) : (
+                <h2 ref={headline} className="scroll-banner-message font-serif text-center font-normal text-white">
+                  {lines.map((line) => (
+                    <span key={line} className="block overflow-hidden">
+                      <span data-scroll-line className="block">{line}</span>
+                    </span>
+                  ))}
+                </h2>
+              )}
             </div>
           </div>
         </div>
@@ -97,7 +111,7 @@ export function ScrollImageHero({ title, eyebrow, image, lines, action, children
 
       <div className="mx-auto max-w-3xl px-5 py-12 text-center md:py-16" data-reveal data-story-copy>
         <p className="mx-auto max-w-xl text-pretty leading-relaxed text-ink/75">{children}</p>
-        <Link href={action.href} className="btn mt-6">{action.label}</Link>
+        {action && <Link href={action.href} className="btn mt-6">{action.label}</Link>}
       </div>
     </header>
   );

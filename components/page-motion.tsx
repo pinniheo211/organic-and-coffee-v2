@@ -23,6 +23,26 @@ export function PageMotion({ children }: { children: ReactNode }) {
     const animations = new Map<Element, gsap.core.Tween>();
 
     motion.add("(prefers-reduced-motion: no-preference)", () => {
+      // Measure the isolated SVG strokes once; never animate section dimensions.
+      const lines = Array.from(container.querySelectorAll<SVGPathElement>("[data-line-draw]"))
+        .map((path) => ({ path, length: path.getTotalLength(), section: path.closest("section") }));
+      lines.forEach(({ path, length, section }) => {
+        if (!section) return;
+        gsap.fromTo(path, {
+          strokeDasharray: length,
+          strokeDashoffset: length,
+        }, {
+          strokeDashoffset: 0,
+          duration: 1.5,
+          ease: "power2.inOut",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 82%",
+            once: true,
+          },
+        });
+      });
+
       container.querySelectorAll("[data-intro]").forEach((intro) => {
         intro.querySelectorAll("[data-intro-item]").forEach((item, index) => {
           const gentlePage = Boolean(item.closest(".cafe-page, .market-page"));
@@ -61,7 +81,7 @@ export function PageMotion({ children }: { children: ReactNode }) {
         Array.from(group.children).forEach((element, index) => revealOnScroll(element, index));
       });
 
-      container.querySelectorAll("[data-hills-intro]").forEach((intro) => {
+      container.querySelectorAll("[data-ingredient-intro]").forEach((intro) => {
         gsap.from(intro.querySelectorAll("h2, p, .btn"), {
           opacity: 0,
           y: 18,
@@ -71,38 +91,6 @@ export function PageMotion({ children }: { children: ReactNode }) {
           clearProps: "opacity,transform",
           scrollTrigger: { trigger: intro, start: "top 86%", once: true },
         });
-      });
-
-      container.querySelectorAll("[data-hills-gallery] .hills-tile").forEach((tile) => {
-        const image = tile.querySelector(".hills-photo img");
-        const copy = tile.querySelector(".hills-copy");
-        const copyItems = copy?.querySelectorAll(".eyebrow, h3, .hills-description, .hills-link");
-        const sequence = gsap.timeline({
-          scrollTrigger: { trigger: tile, start: "top 88%", once: true },
-        });
-
-        if (image) {
-          sequence.fromTo(image, { scale: 1.08, yPercent: 2, opacity: 0.72 }, {
-            scale: 1,
-            yPercent: 0,
-            opacity: 1,
-            duration: 1.1,
-            ease: "power2.out",
-            clearProps: "transform,opacity,willChange",
-            onStart: () => { gsap.set(image, { willChange: "transform, opacity" }); },
-          }, 0);
-        }
-
-        if (copyItems?.length) {
-          sequence.from(copyItems, {
-            opacity: 0,
-            y: 14,
-            duration: 0.58,
-            stagger: 0.075,
-            ease: "power2.out",
-            clearProps: "opacity,transform",
-          }, 0.12);
-        }
       });
 
       container.querySelectorAll("[data-story-motion] [data-story-photo], [data-story-motion] .page-hero-photo").forEach((frame) => {

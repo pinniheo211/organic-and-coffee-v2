@@ -4,9 +4,8 @@ import { HoursTable } from "@/components/hours-table";
 import { PortfolioScrollGrid } from "@/components/ui/portfolio-scroll-grid";
 import { RevealImageMask } from "@/components/ui/reveal-image-mask";
 import { address, mapsUrl, phoneDisplay, phoneHref } from "@/lib/site";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { IngredientStory } from "@/components/ingredient-story";
+import { SectionLine } from "@/components/section-line";
 
 const reasons = [
   {
@@ -23,30 +22,35 @@ const reasons = [
   },
 ] as const;
 
-const gallery = [
+// Content follows organicmarket.com.au/organic-cafe: organic wherever possible.
+const ingredients = [
   {
-    src: "/assets/store.jpg", alt: "Inside the Organic Market",
-    label: "The market", title: "Good things, every day",
-    text: "Organic produce, whole foods and everyday favourites, thoughtfully chosen for your pantry.",
-    href: "/market", link: "Explore the market",
+    src: "/assets/cafe-salad-bowl.png", alt: "A seasonal salad with roasted pumpkin, grains and vegetables",
+    label: "Seasonal produce", title: "Let the season lead.",
+    text: "Our chefs prepare fresh salads, soups and daily specials using seasonal, local produce, with organic ingredients wherever possible.",
+    note: "Fresh salads · Soups · Daily specials",
+    href: "/cafe/menu", link: "See what’s on the menu",
   },
   {
-    src: "/assets/bar.png", alt: "The café bar",
-    label: "The café", title: "Make time for a coffee",
-    text: "Organic coffee and simple, wholesome food with a vegetarian focus. Settle in and stay a little.",
-    href: "/cafe", link: "Discover our café",
+    src: "/assets/break1.jpg", alt: "A freshly prepared focaccia with tomato, greens and melted cheese",
+    label: "Baked to order", title: "Made when you order.",
+    text: "Bruschettas, focaccias and croissants are assembled and baked to order at our food bench. Simple food, served fresh from the kitchen.",
+    note: "Bruschettas · Focaccias · Croissants",
+    href: "/cafe/menu", link: "Explore the café menu",
   },
   {
-    src: "/assets/shop.jpg", alt: "The Organic Market shopfront",
-    label: "Stirling, Adelaide Hills", title: "A little closer to local",
-    text: "Find us at 5 Druid Avenue, in the heart of Stirling. Drop in for your groceries or a leisurely lunch.",
-    href: "/visit", link: "Plan your visit",
+    src: "/assets/bar.png", alt: "The coffee counter at the Organic Market and Café",
+    label: "Organic coffee", title: "Good coffee, thoughtfully sourced.",
+    text: "We pour D’Angelo organic coffee, served black, with Paris Creek organic milk, or with your choice of milk alternative.",
+    note: "D’Angelo coffee · Paris Creek organic milk",
+    href: "/cafe", link: "Meet the café",
   },
   {
-    src: "/assets/cfs3.png", alt: "The café space in Stirling",
-    label: "At the table", title: "Something worth staying for",
-    text: "Seasonal dishes, fresh juices and café favourites. Take a look at what’s on the menu.",
-    href: "/cafe/menu", link: "See our menu",
+    src: "/assets/juice1.jpg", alt: "A glass of freshly pressed juice with a slice of citrus",
+    label: "Freshly pressed", title: "Something fresh in your glass.",
+    text: "Freshly pressed juices and smoothies sit alongside our coffees and teas. A refreshing part of a simple, wholesome café menu.",
+    note: "Fresh juices · Smoothies",
+    href: "/cafe/menu", link: "Find your refreshment",
   },
 ] as const;
 
@@ -100,7 +104,8 @@ export default function HomePage() {
         </div>
       </section> */}
 
-      <section aria-labelledby="true-cost-title" className="bg-paper">
+      <section aria-labelledby="true-cost-title" className="section-ornament home-true-cost bg-paper">
+        <SectionLine variant="trail" className="section-line-ethos" />
         <div className="mx-auto grid max-w-[76rem] gap-8 px-5 py-16 md:grid-cols-2 md:gap-x-16 md:gap-y-10 md:py-24">
           <div>
             <h2 id="true-cost-title" className="font-serif text-5xl leading-tight text-balance text-ember md:text-7xl">
@@ -152,45 +157,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="garden-section garden-wash">
-        <div className="mx-auto max-w-[76rem] px-5 py-16 md:py-24">
-          <div className="hills-intro relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-hills-intro>
-            {/* <BotanicalArt variant="hills" className="section-heading-art" /> */}
-            <div className="max-w-xl">
-              <h2 className="font-serif text-4xl tracking-[-0.03em] md:text-6xl">Find us in the Hills</h2>
-              <p className="mt-3 font-serif text-2xl italic text-ink/70">come for the market, stay for the café</p>
-            </div>
-            <Link href="/cafe/menu" className="btn min-h-12 w-full shrink-0 gap-3 sm:w-auto sm:self-start md:self-auto">
-              See our menu
-              <ArrowUpRight size={18} aria-hidden="true" />
-            </Link>
-          </div>
-          <div className="hills-grid mt-10" data-hills-gallery>
-            {gallery.map((photo) => (
-              <article key={photo.src} className="hills-tile">
-                <div className="hills-photo">
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    sizes="(min-width: 1216px) 294px, (min-width: 1024px) 25vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="hills-copy">
-                  <p className="eyebrow">{photo.label}</p>
-                  <h3 className="font-serif text-balance">{photo.title}</h3>
-                  <p className="hills-description text-pretty">{photo.text}</p>
-                  <Link href={photo.href} className="hills-link">
-                    {photo.link}
-                    <ArrowUpRight size={18} aria-hidden="true" className="shrink-0" />
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <IngredientStory items={ingredients} />
 
       <section className="bg-white">
         <div className="mx-auto grid max-w-[76rem] items-start gap-12 px-5 py-16 md:grid-cols-2 md:py-24" data-pair>

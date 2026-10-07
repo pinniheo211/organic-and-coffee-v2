@@ -1,3 +1,4 @@
+import { SectionLine } from "@/components/section-line";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -43,7 +44,8 @@ export default function CafePage() {
         </div>
       </section>
 
-      <section className="cafe-order-section">
+      <section className="cafe-order-section section-ornament">
+        <SectionLine variant="trail" className="section-line-cafe" />
         <div className="mx-auto grid max-w-[76rem] gap-10 px-5 py-16 md:grid-cols-2 md:items-center md:gap-16 md:py-20">
           <div data-reveal data-story-copy>
             <p className="eyebrow">Settle in or take away</p>

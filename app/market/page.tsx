@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { BotanicalArt } from "@/components/botanical-art";
-import { departments } from "@/lib/site";
+import { SectionLine } from "@/components/section-line";
 import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
 import { ScrollImageHero } from "@/components/scroll-image-hero";
 
@@ -36,7 +34,8 @@ export default function MarketPage() {
         Discover produce from local growers, wholefood staples and regional finds for everyday meals.
       </ScrollImageHero>
 
-      <section aria-labelledby="market-ranges-title" className="market-ranges-section">
+      <section aria-labelledby="market-ranges-title" className="market-ranges-section section-ornament">
+        <SectionLine className="section-line-market" />
         <div className="mx-auto max-w-[76rem] px-5 py-16 md:py-24">
           <div className="market-section-heading" data-reveal>
             <div>
@@ -50,9 +49,6 @@ export default function MarketPage() {
                 Our shelves bring together the things you cook with every day and the local discoveries
                 that make a meal memorable.
               </p>
-              <Link href="/shop" className="btn mt-5">
-                Shop online
-              </Link>
             </div>
           </div>
 
