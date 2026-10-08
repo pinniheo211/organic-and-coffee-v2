@@ -29,7 +29,7 @@ export default function CafeMenuPage() {
           <aside data-reveal-group className="h-fit md:sticky md:top-24">
             <div className="relative mb-5 aspect-[4/3] overflow-hidden bg-recess">
               <Image
-                src="/assets/cfs3.png"
+                src="/assets/cfs3.webp"
                 alt="The café dining area, with tables beside the Organic Market"
                 fill
                 sizes="(min-width: 768px) 13rem, 100vw"

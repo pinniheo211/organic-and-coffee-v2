@@ -16,8 +16,9 @@ export default function AboutPage() {
     <article className="about-page" data-story-motion>
       <ScrollImageHero
         title="Good food has a long story."
+        titleClassName="font-casa-leru"
         eyebrow="A Stirling original · Since 1982"
-        image={{ src: "/assets/story2.jpeg", alt: "A team member serving a customer at the Organic Market counter" }}
+        image={{ src: "/assets/story2.webp", alt: "A team member serving a customer at the Organic Market counter" }}
         lines={["Good food has a", "long story."]}
         titlePlacement="overlay"
         className="about-scroll-hero"
@@ -26,10 +27,10 @@ export default function AboutPage() {
         good food and our local community together for more than four decades.
       </ScrollImageHero>
       <section className="about-values section-ornament" aria-labelledby="values-title">
-        <SectionLine variant="trail" className="section-line-about" />
+        <SectionLine className="section-line-about" />
         <div className="about-values-image" data-story-photo>
           <Image
-            src="/assets/cafe-salad-bowl.png"
+            src="/assets/cafe-salad-bowl-png.webp"
             alt="A colourful café salad made with seasonal ingredients"
             fill
             sizes="(min-width: 768px) 48vw, 100vw"
@@ -38,7 +39,7 @@ export default function AboutPage() {
         </div>
         <div className="about-values-copy" data-story-copy>
           <p className="eyebrow">From our shelves to your table</p>
-          <h2 id="values-title" className="about-section-title">The way we <em>choose.</em></h2>
+          <h2 id="values-title" className="about-section-title">The way we choose.</h2>
           <p>
             We look for certified organic and biodynamic food, seasonal produce and trusted
             growers. When a product does not meet that standard, we aim to be clear about it.

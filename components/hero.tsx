@@ -14,7 +14,7 @@ export function Hero() {
       <div data-intro className="hero-intro z-20 mx-auto w-full max-w-3xl shrink-0 px-5 pt-8 text-center md:pt-16">
         <h1
           data-intro-item
-          className="font-serif text-[3.4rem] leading-[0.9] tracking-[-0.04em] md:text-[6.2rem]"
+          className="font-casa-leru text-[3.4rem] leading-[0.9] tracking-[-0.04em] md:text-[6.2rem]"
         >
           Organic & whole foods
         </h1>

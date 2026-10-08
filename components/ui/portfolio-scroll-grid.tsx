@@ -14,6 +14,8 @@ export interface PortfolioScrollGridProps {
   images: PortfolioScrollGridImage[];
   /** Grid rows — sets how long the section scrolls. Default `8`. */
   rows?: number;
+  /** Fade the section background toward the next story as it enters the viewport. */
+  backgroundTransition?: boolean;
   className?: string;
 }
 
@@ -33,6 +35,7 @@ export function PortfolioScrollGrid({
   title,
   images,
   rows = 8,
+  backgroundTransition = false,
   className,
 }: PortfolioScrollGridProps) {
   return (
@@ -45,19 +48,25 @@ export function PortfolioScrollGrid({
         } as React.CSSProperties
       }
     >
-      <div className="mx-auto grid max-w-md gap-5 px-5 py-12 md:hidden">
-        <h2 className="text-center font-serif text-4xl leading-tight text-ink">{title}</h2>
-        <div className="grid grid-cols-2 gap-3">
+      {backgroundTransition && (
+        <div className="cafe-scroll-background-transition" data-cafe-background-transition aria-hidden="true" />
+      )}
+      <div className="relative z-10 mx-auto grid w-full max-w-none gap-4 px-3 py-6 md:hidden">
+        <h2 className="cafe-scroll-transition-title text-center font-serif text-4xl leading-tight text-ink">
+          {title}
+        </h2>
+        <div className="grid grid-cols-2 gap-2">
           {images.slice(0, 4).map((image) => (
-            <div key={image.src} className="relative aspect-[4/3] overflow-hidden bg-recess">
+            <div key={image.src} className="relative aspect-[4/3] overflow-hidden ">
               <Image
                 src={image.src}
                 alt={image.alt}
                 fill
                 loading="lazy"
                 decoding="async"
-                sizes="(max-width: 639px) calc(50vw - 1.25rem), 10rem"
+                sizes="calc(50vw - 1rem)"
                 className="size-full object-cover"
+                data-cafe-scroll-image
               />
             </div>
           ))}
@@ -65,10 +74,10 @@ export function PortfolioScrollGrid({
       </div>
 
       <div className="hidden md:block">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 z-10">
           <div className="sticky top-0 flex h-screen items-center justify-center px-4">
             <h2
-              className="text-center font-extrabold uppercase leading-none tracking-tight text-ink"
+              className="cafe-scroll-transition-title text-center font-extrabold uppercase leading-none tracking-tight text-ink"
               style={{ fontSize: u(TITLE) }}
             >
               {title}
@@ -77,7 +86,7 @@ export function PortfolioScrollGrid({
         </div>
 
         <div
-          className="relative flex justify-center"
+          className="relative z-10 flex justify-center"
           style={{ marginTop: `calc(${PHASE} - ${u(ROW)})` }}
         >
           {Array.from({ length: COLUMNS }, (_, c) => (
@@ -96,20 +105,22 @@ export function PortfolioScrollGrid({
             >
               {Array.from({ length: rows }, (_, r) => {
                 const image = images[(r + c * 3) % images.length];
+                const hideAtBottom = backgroundTransition && c % 2 === 1 && r === rows - 1;
 
                 return (
                   <div key={r} className="flex items-center justify-center" style={{ height: u(ROW) }}>
-                    {image && (
-                    <Image
+                    {image && !hideAtBottom && (
+                      <Image
                         src={image.src}
                         alt={image.alt}
-                      width={600}
-                      height={600}
+                        width={600}
+                        height={600}
                         loading="lazy"
                         decoding="async"
                         className="object-contain"
-                      sizes="(min-width: 768px) 22vw, 50vw"
+                        sizes="(min-width: 768px) 22vw, 50vw"
                         style={{ width: u(BOX_W), height: u(BOX_H) }}
+                        data-cafe-scroll-image
                       />
                     )}
                   </div>

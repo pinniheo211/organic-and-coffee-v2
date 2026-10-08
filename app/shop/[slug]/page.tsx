@@ -41,7 +41,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               fill
               priority
               sizes="(min-width: 768px) 36rem, 100vw"
-              className={product.image.endsWith(".webp") ? "object-contain p-10 mix-blend-multiply" : "object-cover"}
+              className={product.imageFit === "contain" ? "object-contain p-10 mix-blend-multiply" : "object-cover"}
             />
           ) : (
             <span className="font-serif text-3xl text-ink/25">{product.category}</span>

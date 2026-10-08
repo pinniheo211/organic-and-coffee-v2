@@ -20,7 +20,7 @@ export const cafeMenu: CafeMenuSection[] = [
     id: "breakfast",
     title: "Breakfast",
     note: "All day",
-    imageSrc: "/assets/cafe-shakshouka.png",
+    imageSrc: "/assets/cafe-shakshouka.webp",
     imageAlt: "Shakshouka served with toasted sourdough at the café",
     items: [
       { name: "Shakshouka", description: "Egg baked in spicy capsicum and tomato sauce, with toasted sourdough. Vegan option with avocado, no egg.", price: "24.75", dietary: ["Vegan option"] },
@@ -42,7 +42,7 @@ export const cafeMenu: CafeMenuSection[] = [
     id: "lunch",
     title: "Lunch",
     note: "Available all day; salad bowl from 11am",
-    imageSrc: "/assets/cafe-salad-bowl.png",
+    imageSrc: "/assets/cafe-salad-bowl-png.webp",
     imageAlt: "The café's salad bowl with roasted pumpkin and fresh greens",
     items: [
       { name: "Soup: mushroom & lentil", description: "Daily soup served with bread.", price: "from 14.50", dietary: ["DF", "GF", "NF", "Vegan"] },
@@ -67,7 +67,7 @@ export const cafeMenu: CafeMenuSection[] = [
     id: "cakes",
     title: "Muffins & cakes",
     note: "Cabinet selection changes; some items may not be available every day.",
-    imageSrc: "/assets/cafe-almond-biscuit.png",
+    imageSrc: "/assets/cafe-almond-biscuit.webp",
     imageAlt: "Almond biscuit from the café cabinet",
     items: [
       { name: "Pear, walnut & sultana muffin", price: "6.50", dietary: ["Vegan"] },
@@ -89,7 +89,7 @@ export const cafeMenu: CafeMenuSection[] = [
   {
     id: "coffee",
     title: "Coffee & warm drinks",
-    imageSrc: "/assets/cafe-flat-white.jpg",
+    imageSrc: "/assets/cafe-flat-white.webp",
     imageAlt: "Organic flat white coffee with latte art",
     items: [
       { name: "Flat white", price: "5.50" }, { name: "Latte", price: "5.50" },
@@ -110,7 +110,7 @@ export const cafeMenu: CafeMenuSection[] = [
   {
     id: "smoothies",
     title: "Smoothies",
-    imageSrc: "/assets/cafe-smoothie.jpg",
+    imageSrc: "/assets/cafe-smoothie.webp",
     imageAlt: "Fresh smoothie served at the café",
     items: [
       { name: "Acai smoothie", description: "OM creation.", price: "11.50" },
@@ -123,7 +123,7 @@ export const cafeMenu: CafeMenuSection[] = [
   {
     id: "cold-drinks",
     title: "Cold drinks",
-    imageSrc: "/assets/cafe-cold-juice.jpg",
+    imageSrc: "/assets/cafe-cold-juice.webp",
     imageAlt: "Three freshly made juices in red, orange and green",
     items: [
       { name: "Cold-pressed juice", price: "from 10.00" },

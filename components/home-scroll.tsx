@@ -33,6 +33,52 @@ export function HomeScroll({ children }: { children: ReactNode }) {
           },
         );
       }
+
+      const cafeGallery = root.current?.querySelector(".cafe-scroll-gallery");
+      const cafeImages = cafeGallery?.querySelectorAll<HTMLElement>("[data-cafe-scroll-image]");
+      cafeImages?.forEach((image) => {
+        gsap.fromTo(image, { y: 28 }, {
+          y: -28,
+          ease: "none",
+          scrollTrigger: {
+            trigger: image,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.5,
+          },
+        });
+      });
+
+      const ingredientStory = root.current?.querySelector("#ingredient-story");
+      const cafeBackground = cafeGallery?.querySelector<HTMLElement>("[data-cafe-background-transition]");
+      if (cafeGallery && ingredientStory && cafeBackground) {
+        const galleryIsTallerThanViewport = () => cafeGallery.offsetHeight > window.innerHeight * 1.2;
+
+        const backgroundTransition = gsap.timeline({
+          scrollTrigger: {
+            trigger: cafeGallery,
+            start: () =>
+              galleryIsTallerThanViewport() ? "center center" : "top 70%",
+            end: () =>
+              galleryIsTallerThanViewport() ? "bottom bottom" : "bottom 105%",
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        backgroundTransition.fromTo(
+          cafeBackground,
+          { opacity: 0 },
+          { opacity: 1, duration: 1, ease: "none" },
+          0,
+        );
+        backgroundTransition.fromTo(
+          cafeGallery,
+          { "--cafe-transition-progress": "0%" },
+          { "--cafe-transition-progress": "100%", duration: 1, ease: "none" },
+          0,
+        );
+      }
     }, root);
 
     return () => ctx.revert();

@@ -16,6 +16,7 @@ export type Product = {
   unit: string;
   summary: string;
   image?: string;
+  imageFit?: "cover" | "contain";
 };
 
 export const products: Product[] = [
@@ -26,7 +27,8 @@ export const products: Product[] = [
     price: 650,
     unit: "each",
     summary: "Certified organic, from the produce stand when they are in season.",
-    // image: "/assets/artichoke.webp",
+    image: "/assets/artichoke.webp",
+    imageFit: "contain",
   },
   {
     slug: "hills-apples",
@@ -35,6 +37,7 @@ export const products: Product[] = [
     price: 690,
     unit: "per kg",
     summary: "Organic apples from Hills growers. The variety follows the week.",
+    image: "/assets/IMG_5756.webp",
   },
   {
     slug: "mixed-leaves",
@@ -43,6 +46,7 @@ export const products: Product[] = [
     price: 420,
     unit: "bag",
     summary: "A small bag of seasonal leaves, washed and packed for the week.",
+    image: "/assets/cafe-salad-bowl-jpg.webp",
   },
   {
     slug: "lemons",
@@ -51,6 +55,7 @@ export const products: Product[] = [
     price: 580,
     unit: "per kg",
     summary: "Organic lemons for the kitchen and the café.",
+    image: "/assets/img3.webp",
   },
   {
     slug: "rolled-oats",
@@ -59,6 +64,8 @@ export const products: Product[] = [
     price: 480,
     unit: "per kg",
     summary: "Wholegrain oats from the bulk wall, sold by weight.",
+    image: "/assets/product4.webp",
+    imageFit: "contain",
   },
   {
     slug: "almonds",
@@ -67,6 +74,7 @@ export const products: Product[] = [
     price: 2800,
     unit: "per kg",
     summary: "Raw almonds, scooped to the amount you will use.",
+    image: "/assets/cafe-almond-biscuit.webp",
   },
   {
     slug: "french-lentils",
@@ -75,6 +83,8 @@ export const products: Product[] = [
     price: 640,
     unit: "per kg",
     summary: "Small green lentils, sold loose.",
+    image: "/assets/product5.webp",
+    imageFit: "contain",
   },
   {
     slug: "spelt-flour",
@@ -83,6 +93,7 @@ export const products: Product[] = [
     price: 520,
     unit: "per kg",
     summary: "Organic spelt flour for bread and the café bench.",
+    image: "/assets/break4.webp",
   },
   {
     slug: "olive-oil",
@@ -91,6 +102,7 @@ export const products: Product[] = [
     price: 1800,
     unit: "500 ml",
     summary: "A bottled oil from the grocery aisle, for cooking and the table.",
+    image: "/assets/break3.webp",
   },
   {
     slug: "honey",
@@ -99,6 +111,8 @@ export const products: Product[] = [
     price: 1450,
     unit: "500 g",
     summary: "A jar of organic honey. Ask in the shop if you want a local line.",
+    image: "/assets/product1.webp",
+    imageFit: "contain",
   },
   {
     slug: "passata",
@@ -107,6 +121,7 @@ export const products: Product[] = [
     price: 490,
     unit: "680 g",
     summary: "Organic tomatoes, bottled for the pantry.",
+    image: "/assets/cafe-shakshouka.webp",
   },
   {
     slug: "oat-biscuits",
@@ -115,6 +130,7 @@ export const products: Product[] = [
     price: 620,
     unit: "pack",
     summary: "A plain oat biscuit from the sweet shelf.",
+    image: "/assets/cafe-almond-biscuit.webp",
   },
   {
     slug: "paris-creek-milk",
@@ -123,6 +139,7 @@ export const products: Product[] = [
     price: 440,
     unit: "1 litre",
     summary: "Organic milk from Paris Creek, the same milk used in the café.",
+    image: "/assets/cafe-smoothie.webp",
   },
   {
     slug: "dangelo-beans",
@@ -131,6 +148,7 @@ export const products: Product[] = [
     price: 1600,
     unit: "250 g",
     summary: "Organic coffee from D'Angelo, the beans the café grinds.",
+    image: "/assets/cafe-flat-white.webp",
   },
   {
     slug: "hills-white",
@@ -139,6 +157,7 @@ export const products: Product[] = [
     price: 2800,
     unit: "750 ml",
     summary: "A white from the wine wall. The label changes with what is in stock.",
+    image: "/assets/cafe-cold-juice.webp",
   },
   {
     slug: "pressed-juice",
@@ -147,7 +166,7 @@ export const products: Product[] = [
     price: 750,
     unit: "bottle",
     summary: "Juice pressed from market fruit. The flavour follows the stand.",
-    image: "/assets/img3.jpg",
+    image: "/assets/img3.webp",
   },
   {
     slug: "olive-soap",
@@ -156,6 +175,8 @@ export const products: Product[] = [
     price: 680,
     unit: "bar",
     summary: "A plain soap from the personal care shelf.",
+    image: "/assets/artichoke.webp",
+    imageFit: "contain",
   },
   {
     slug: "hand-cream",
@@ -164,6 +185,8 @@ export const products: Product[] = [
     price: 1600,
     unit: "tube",
     summary: "A small tube, chosen to the same standard as the food.",
+    image: "/assets/artichoke.webp",
+    imageFit: "contain",
   },
 ];
 

@@ -67,14 +67,14 @@ export function CafeHero() {
     <header ref={root} className="cafe-scroll-hero">
       <div data-intro className="cafe-banner-heading mx-auto max-w-[76rem] px-5 text-center">
         <p data-intro-item className="eyebrow">Organic coffee · Seasonal food</p>
-        <h1 data-intro-item className="mt-4 font-serif text-balance text-ember">The café kitchen</h1>
+        <h1 data-intro-item className="mt-4 font-casa-leru text-balance text-ember">The café kitchen</h1>
       </div>
 
       <div ref={stage} className="cafe-scroll-stage">
         <div className="cafe-scroll-sticky">
           <div ref={photo} className="cafe-scroll-photo">
             <Image
-              src="/assets/cafe-shakshouka.png"
+              src="/assets/cafe-shakshouka.webp"
               alt="Shakshouka served with toasted sourdough at the café"
               fill
               preload

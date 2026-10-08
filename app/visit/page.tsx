@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function VisitPage() {
   return (
     <article>
-      <PageHero title="Stirling, at the start of the Hills" image={{ src: "/assets/shop.jpg", alt: "The front of the market at 5 Druid Avenue, under autumn vines", position: "left" }}>
+      <PageHero title="Stirling, at the start of the Hills" image={{ src: "/assets/shop.webp", alt: "The front of the market at 5 Druid Avenue, under autumn vines", position: "left" }}>
         The shop and café are in the middle of Stirling, with street parking and local free car
         parks. The Hills are a short drive from Adelaide.
       </PageHero>

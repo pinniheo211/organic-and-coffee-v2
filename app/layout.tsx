@@ -24,6 +24,14 @@ const coconat = localFont({
   display: "swap",
 });
 
+const casaLeru = localFont({
+  src: "./fonts/casa-leru/Casa-Leru-Italic.otf",
+  weight: "400",
+  style: "italic",
+  variable: "--font-casa-leru",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: "Organic Market and Café",
@@ -35,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${coconat.variable} h-full`}>
+    <html lang="en" className={`${dmSans.variable} ${coconat.variable} ${casaLeru.variable} h-full`}>
       <body className="min-h-full bg-paper font-sans text-[1.05rem] leading-relaxed text-ink antialiased">
         <a className="skip-link" href="#content">
           Skip to content

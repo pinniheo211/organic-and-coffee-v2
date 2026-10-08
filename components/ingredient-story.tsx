@@ -17,29 +17,31 @@ type IngredientItem = {
 };
 
 const STEP_MS = 6400;
-const scribbleSides = ["left", "right"] as const;
-const roundLoop = "M600 150C848.5 150 1050 351.5 1050 600C1050 848.5 848.5 1050 600 1050C351.5 1050 150 848.5 150 600C150 351.5 351.5 150 600 150Z";
 
 const themes = [
   {
-    bg: "#d4edc8",
-    ink: "#102418",
-    line: "#146b38",
+    bg: "#1a2e26",
+    ink: "#f7f2e8",
+    line: "#f3d7ae",
+    path: "M-80 520C50 480 150 445 270 450S470 525 610 435 785 250 930 305 1120 500 1270 400 1460 265 1680 205",
   },
   {
     bg: "#f6d9b8",
     ink: "#2a1408",
     line: "#e24e1c",
+    path: "M-80 330C80 150 220 150 300 340S460 565 590 365 760 120 900 300 1080 565 1220 375 1450 185 1680 350",
   },
   {
-    bg: "#1a2e26",
-    ink: "#f7f2e8",
-    line: "#f3d7ae",
+    bg: "#d4edc8",
+    ink: "#102418",
+    line: "#146b38",
+    path: "M-80 600C90 590 170 515 255 430S380 350 470 415 560 500 640 385 760 170 870 190 940 335 1030 300 1150 120 1230 135 1430 220 1680 120",
   },
   {
     bg: "#d7f3e4",
     ink: "#0e241c",
     line: "#0b6e62",
+    path: "M-80 430C35 430 60 320 175 300S310 530 430 540 560 280 685 280 830 490 950 490 1100 250 1220 250 1380 420 1680 370",
   },
 ] as const;
 
@@ -48,6 +50,7 @@ export function IngredientStory({ items }: { items: readonly IngredientItem[] })
   const [entered, setEntered] = useState(false);
   const [reduced, setReduced] = useState(false);
   const generation = useRef(0);
+  const theme = themes[active % themes.length];
 
   useLayoutEffect(() => {
     const section = document.getElementById("ingredient-story");
@@ -75,6 +78,13 @@ export function IngredientStory({ items }: { items: readonly IngredientItem[] })
     };
   }, []);
 
+  useLayoutEffect(() => {
+    const cafeGallery = document.querySelector<HTMLElement>(".cafe-scroll-gallery");
+    if (!cafeGallery) return;
+    cafeGallery.style.setProperty("--cafe-transition-bg", theme.bg);
+    cafeGallery.style.setProperty("--cafe-transition-ink", theme.ink);
+  }, [theme.bg, theme.ink]);
+
   function select(index: number) {
     generation.current += 1;
     setActive(index);
@@ -86,11 +96,9 @@ export function IngredientStory({ items }: { items: readonly IngredientItem[] })
     setActive((current) => (generation.current === started ? (current + 1) % items.length : current));
   }
 
-  const theme = themes[active % themes.length];
   const themeStyle = {
     "--ingredient-bg": theme.bg,
     "--ingredient-ink": theme.ink,
-    "--ingredient-line": theme.line,
   } as CSSProperties;
 
   return (
@@ -101,28 +109,22 @@ export function IngredientStory({ items }: { items: readonly IngredientItem[] })
       aria-labelledby="ingredient-title"
     >
       <div className="ingredient-scribbles" aria-hidden="true">
-        {themes.flatMap((entry, index) =>
-          scribbleSides.map((side) => (
-            <svg
-              key={`${entry.line}-${side}`}
-              className={`ingredient-scribble ingredient-scribble-${side}${index === active % themes.length ? " is-active" : ""}`}
-              style={{ color: entry.line }}
-              viewBox="0 0 1200 1200"
-              fill="none"
-            >
-              <path
-                d={roundLoop}
-                pathLength="1"
-                transform={side === "right" ? "translate(1200 0) scale(-1 1)" : undefined}
-              />
-            </svg>
-          )),
-        )}
+        {themes.map((entry, index) => (
+          <svg
+            key={entry.line}
+            className={`ingredient-scribble${index === active % themes.length ? " is-active" : ""}`}
+            style={{ color: entry.line }}
+            viewBox="-300 0 2200 700"
+            fill="none"
+          >
+            <path d={entry.path} pathLength="1" />
+          </svg>
+        ))}
       </div>
       <div className="ingredient-explorer-inner">
         <header className="ingredient-explorer-heading">
           <p className="eyebrow">From our kitchen</p>
-          <h2 id="ingredient-title" className="font-serif">Good food, from <em>good ingredients.</em></h2>
+          <h2 id="ingredient-title" className="font-casa-leru">Good food, good ingredients.</h2>
           <p className="ingredient-explorer-subtitle">Seasonal, local and organic wherever possible.</p>
         </header>
 

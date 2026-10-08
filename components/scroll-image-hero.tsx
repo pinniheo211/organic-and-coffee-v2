@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
 
 export interface ScrollImageHeroProps {
   title: string;
+  titleClassName?: string;
   eyebrow: string;
   image: { src: string; alt: string };
   lines: readonly [string, string];
@@ -17,7 +19,7 @@ export interface ScrollImageHeroProps {
   className?: string;
 }
 
-export function ScrollImageHero({ title, eyebrow, image, lines, action, children, titlePlacement = "above", className }: ScrollImageHeroProps) {
+export function ScrollImageHero({ title, titleClassName, eyebrow, image, lines, action, children, titlePlacement = "above", className }: ScrollImageHeroProps) {
   const root = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const photo = useRef<HTMLDivElement>(null);
@@ -76,7 +78,7 @@ export function ScrollImageHero({ title, eyebrow, image, lines, action, children
       {titlePlacement === "above" && (
         <div data-intro className="scroll-banner-heading mx-auto max-w-[76rem] px-5 text-center">
           <p data-intro-item className="eyebrow">{eyebrow}</p>
-          <h1 data-intro-item className="mt-4 font-serif text-balance text-ember">{title}</h1>
+          <h1 data-intro-item className={cn("mt-4 font-serif text-balance text-ember", titleClassName)}>{title}</h1>
         </div>
       )}
 
@@ -88,7 +90,7 @@ export function ScrollImageHero({ title, eyebrow, image, lines, action, children
             <div className={`absolute inset-0 flex items-center justify-center px-5 ${titlePlacement === "overlay" ? "scroll-banner-overlay" : ""}`}>
               {titlePlacement === "overlay" && <p className="scroll-banner-overlay-eyebrow">{eyebrow}</p>}
               {titlePlacement === "overlay" ? (
-                <h1 ref={headline} className="scroll-banner-message font-serif text-center font-normal text-white">
+                <h1 ref={headline} className={cn("scroll-banner-message font-serif text-center font-normal text-white", titleClassName)}>
                   {lines.map((line) => (
                     <span key={line} className="block overflow-hidden">
                       <span data-scroll-line className="block">{line}</span>
@@ -96,7 +98,7 @@ export function ScrollImageHero({ title, eyebrow, image, lines, action, children
                   ))}
                 </h1>
               ) : (
-                <h2 ref={headline} className="scroll-banner-message font-serif text-center font-normal text-white">
+                <h2 ref={headline} className={cn("scroll-banner-message font-serif text-center font-normal text-white", titleClassName)}>
                   {lines.map((line) => (
                     <span key={line} className="block overflow-hidden">
                       <span data-scroll-line className="block">{line}</span>

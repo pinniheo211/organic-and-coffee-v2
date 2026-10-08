@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 };
 
 const cafePhotos = [
-  { src: "/assets/cfs1.png", alt: "A painting on the café wall above the wine shelf", className: "cafe-photo-main" },
-  { src: "/assets/cfs2.png", alt: "The café wall with local art and daily special boards", className: "cafe-photo-side" },
-  { src: "/assets/cafe-salad-bowl.png", alt: "A fresh café salad bowl with seasonal vegetables", className: "cafe-photo-detail" },
+  { src: "/assets/cfs1.webp", alt: "A painting on the café wall above the wine shelf", className: "cafe-photo-main" },
+  { src: "/assets/cfs2.webp", alt: "The café wall with local art and daily special boards", className: "cafe-photo-side" },
+  { src: "/assets/cafe-salad-bowl-png.webp", alt: "A fresh café salad bowl with seasonal vegetables", className: "cafe-photo-detail" },
 ] as const;
 
 export default function CafePage() {
@@ -23,8 +23,9 @@ export default function CafePage() {
     <article data-story-motion className="cafe-page">
       <ScrollImageHero
         title="The café kitchen"
+        titleClassName="font-casa-leru"
         eyebrow="Organic coffee · Seasonal food"
-        image={{ src: "/assets/cafe-shakshouka.png", alt: "Shakshouka served with toasted sourdough at the café" }}
+        image={{ src: "/assets/cafe-shakshouka.webp", alt: "Shakshouka served with toasted sourdough at the café" }}
         lines={["Simple food.", "Good company."]}
         action={{ href: "/cafe/menu", label: "View menu" }}
         className="cafe-scroll-hero"
@@ -45,7 +46,7 @@ export default function CafePage() {
       </section>
 
       <section className="cafe-order-section section-ornament">
-        <SectionLine variant="trail" className="section-line-cafe" />
+        <SectionLine className="section-line-cafe" />
         <div className="mx-auto grid max-w-[76rem] gap-10 px-5 py-16 md:grid-cols-2 md:items-center md:gap-16 md:py-20">
           <div data-reveal data-story-copy>
             <p className="eyebrow">Settle in or take away</p>

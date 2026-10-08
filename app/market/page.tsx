@@ -10,14 +10,14 @@ export const metadata: Metadata = {
 };
 
 const marketGallery = [
-  { src: "/assets/img1.png", alt: "A fresh grain and vegetable bowl with greens" },
-  { src: "/assets/img2.png", alt: "A bowl of fruit, coconut and seasonal ingredients" },
-  { src: "/assets/IMG_5756.JPG", alt: "Seasonal berries, fruit and wholefoods" },
-  { src: "/assets/img3.jpg", alt: "Fresh juice made with market produce" },
-  { src: "/assets/juice1.jpg", alt: "A freshly pressed juice" },
-  { src: "/assets/break1.jpg", alt: "A café dish made with fresh ingredients" },
-  { src: "/assets/break3.jpg", alt: "Seasonal food served at the café" },
-  { src: "/assets/shop.jpg", alt: "The Organic Market in Stirling" },
+  { src: "/assets/img1.webp", alt: "A fresh grain and vegetable bowl with greens" },
+  { src: "/assets/img2.webp", alt: "A bowl of fruit, coconut and seasonal ingredients" },
+  { src: "/assets/IMG_5756.webp", alt: "Seasonal berries, fruit and wholefoods" },
+  { src: "/assets/img3.webp", alt: "Fresh juice made with market produce" },
+  { src: "/assets/juice1.webp", alt: "A freshly pressed juice" },
+  { src: "/assets/break1.webp", alt: "A café dish made with fresh ingredients" },
+  { src: "/assets/break3.webp", alt: "Seasonal food served at the café" },
+  { src: "/assets/shop.webp", alt: "The Organic Market in Stirling" },
 ] as const;
 
 export default function MarketPage() {
@@ -25,8 +25,9 @@ export default function MarketPage() {
     <article data-story-motion className="market-page">
       <ScrollImageHero
         title="A good food market"
+        titleClassName="font-casa-leru"
         eyebrow="Organic Market · Stirling"
-        image={{ src: "/assets/store.jpg", alt: "Shelves of pantry goods and fresh produce inside the Organic Market" }}
+        image={{ src: "/assets/store.webp", alt: "Shelves of pantry goods and fresh produce inside the Organic Market" }}
         lines={["Browse", "our Market."]}
         action={{ href: "/shop", label: "Shop online" }}
         className="market-scroll-hero"
