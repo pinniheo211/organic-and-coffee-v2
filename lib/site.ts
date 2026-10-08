@@ -20,6 +20,24 @@ export const nav = [
   // { href: "/visit", label: "Visit" },
 ] as const;
 
+export const shopDepartments = [
+  "All Departments",
+  "From The VEGGIE PATCH",
+  "From The ORCHARD",
+  "From The FRIDGE",
+  "From The PANTRY",
+  "From The BULK BIN",
+  "For The THIRST",
+  "For The BOD ’Inside’",
+  "For The BOD ’Outside’",
+  "For The BOD ’Baby’",
+  "For The CLEANER",
+  "For The GARDENER",
+  "For HER, HIM Or YOU!",
+  "For The PETS",
+  "And The Perfect GIFT!",
+] as const;
+
 export const hours = [
   { when: "Monday to Friday", shop: "8:00–5:00", cafe: "8:00–4:30" },
   { when: "Saturday and Sunday", shop: "8:00–4:30", cafe: "8:00–4:00" },

@@ -58,10 +58,9 @@ export function HomeScroll({ children }: { children: ReactNode }) {
           scrollTrigger: {
             trigger: cafeGallery,
             start: () =>
-              galleryIsTallerThanViewport() ? "center center" : "top 70%",
-            end: () =>
-              galleryIsTallerThanViewport() ? "bottom bottom" : "bottom 105%",
-            scrub: 0.8,
+              galleryIsTallerThanViewport() ? "center center" : "top 90%",
+            end: "bottom 115%",
+            scrub: 0.25,
             invalidateOnRefresh: true,
           },
         });

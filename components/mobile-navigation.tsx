@@ -4,6 +4,7 @@ import gsap from "gsap";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useLayoutEffect, useRef } from "react";
+import { useCart } from "@/components/cart-provider";
 import { nav } from "@/lib/site";
 
 const MENU_DURATION = 0.6;
@@ -14,6 +15,8 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
   const unlockRef = useRef<((restoreScroll?: boolean) => void) | null>(null);
   const lockedPath = useRef<string | null>(null);
   const pathname = usePathname();
+  const { count, ready } = useCart();
+  const basketLabel = ready && count > 0 ? `Basket, ${count}` : "Basket";
 
   const dismiss = useCallback((restoreScroll = true) => {
     dialogRef.current?.close();
@@ -27,7 +30,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
     if (!dialog) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (open && !window.matchMedia("(min-width: 768px)").matches) {
+    if (open) {
       if (!unlockRef.current) {
         const { body, documentElement } = document;
         const x = window.scrollX;
@@ -124,7 +127,6 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
       <div className="flex shrink-0 items-center justify-between border-b border-current/20 pb-4">
         <Link href="/" onNavigate={onNavigate} className="leading-none" aria-label="Organic Market, home">
           <span className="block font-serif text-[1.65rem] leading-none tracking-[-0.03em]">Organic Market</span>
-          <span className="mt-1 block text-[0.78rem] opacity-65">and café, Stirling</span>
         </Link>
         <button type="button" autoFocus className="mobile-menu-close grid size-11 place-items-center" aria-label="Close navigation" onClick={onClose}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -143,10 +145,39 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
           ))}
         </ul>
       </nav>
-      <div data-menu-item className="grid shrink-0 gap-3 border-t border-current/20 pt-6">
-        <Link href="/login" onNavigate={onNavigate} className="btn w-full">Login</Link>
-
-        <Link href="/shop" onNavigate={onNavigate} className="btn-line min-h-11 justify-center">Shop online</Link>
+      <nav className="shrink-0 border-t border-current/20 py-5" aria-label="Online shopping and café menu">
+        <ul className="grid">
+          <li data-menu-item>
+            <Link
+              href="/shop"
+              onNavigate={onNavigate}
+              aria-current={pathname === "/shop" ? "page" : undefined}
+              className="block border-b border-current/15 py-3 font-serif text-2xl transition-colors hover:text-[var(--leaf)]"
+            >
+              Shop Online
+            </Link>
+          </li>
+          <li data-menu-item>
+            <Link
+              href="/cafe/menu"
+              onNavigate={onNavigate}
+              aria-current={pathname === "/cafe/menu" ? "page" : undefined}
+              className="block border-b border-current/15 py-3 font-serif text-2xl transition-colors hover:text-[var(--leaf)]"
+            >
+              See our menu
+            </Link>
+          </li>
+        </ul>
+      </nav>
+      <div data-menu-item className="grid shrink-0 grid-cols-2 gap-3 border-t border-current/20 pt-6">
+        <Link href="/login" onNavigate={onNavigate} className="btn w-full">Sign in</Link>
+        <Link href="/shop/basket" onNavigate={onNavigate} aria-label={basketLabel} className="btn-line inline-flex min-h-11 items-center justify-center gap-2">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 8h16l-1.2 12H5.2L4 8Z" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M9 9V6a3 3 0 0 1 6 0v3" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+          <span>Basket{ready && count > 0 ? ` (${count > 99 ? "99+" : count})` : ""}</span>
+        </Link>
       </div>
     </dialog>
   );

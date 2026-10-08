@@ -57,11 +57,15 @@ export function ShopCatalog({ products }: { products: Product[] }) {
   }
 
   return (
-    <div className="mx-auto max-w-[80rem] px-5 pb-20">
-      <div className="grid gap-8 md:grid-cols-[12rem_minmax(0,1fr)] md:gap-10">
-        <aside className="h-fit border border-line bg-sage p-3 md:sticky md:top-[calc(var(--header-h)+1.5rem)]">
+    <div className="mx-auto max-w-[80rem] px-4 pb-16 sm:px-5 sm:pb-20">
+      <div className="grid min-w-0 gap-6 md:grid-cols-[12rem_minmax(0,1fr)] md:gap-10">
+        <aside className="sticky top-[calc(var(--header-h)-1rem)] z-40 -mx-4 h-fit min-w-0 border-0 bg-paper p-3 shadow-sm sm:-mx-5 sm:top-[calc(var(--header-h)-0.5rem)] md:top-[calc(var(--header-h)+1.5rem)] md:mx-0 md:border md:border-line md:bg-sage md:shadow-none">
           <p className="eyebrow px-3 py-2">Categories</p>
-          <nav aria-label="Shop categories" className="shop-category-tabs flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
+          <nav
+            id="shop-category-list"
+            aria-label="Shop categories"
+            className="-mx-1 flex min-w-0 flex-wrap gap-2 px-1 pb-1 md:mx-0 md:flex-col md:flex-nowrap md:px-0 md:pb-0"
+          >
             {(["All", ...categories] as const).map((item) => {
               const active = item === category;
               return (
@@ -70,8 +74,8 @@ export function ShopCatalog({ products }: { products: Product[] }) {
                   type="button"
                   aria-pressed={active}
                   onClick={() => setCategory(item)}
-                  className={`shrink-0 px-3 py-2 text-left text-sm transition-colors ${
-                    active ? "bg-forest text-paper" : "text-ink/75 hover:bg-paper hover:text-forest"
+                  className={`shrink-0 whitespace-nowrap px-3 py-2.5 text-left text-sm transition-colors ${
+                    active ? "shop-filter-active" : "text-ink/75 hover:bg-paper hover:text-forest"
                   }`}
                 >
                   {item === "All" ? "All products" : item}
@@ -82,15 +86,15 @@ export function ShopCatalog({ products }: { products: Product[] }) {
         </aside>
 
         <div className="min-w-0">
-          <div className="flex flex-col gap-4 border-b border-line pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex min-w-0 flex-col gap-4 border-b border-line pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="eyebrow">From the Market shelves</p>
               <h2 className="mt-2 font-serif text-3xl tracking-[-0.03em] md:text-4xl">
                 {category === "All" ? "All products" : category}
               </h2>
             </div>
-            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Sort products">
-              <span className="eyebrow mr-1">Sort by</span>
+            {/* <div className="shop-sort-controls flex min-w-0 max-w-full items-center gap-2 overflow-x-auto pb-1" role="group" aria-label="Sort products">
+              <span className="eyebrow mr-1 shrink-0">Sort by</span>
               {sortOptions.map((option) => {
                 const active = sort === option.id;
                 return (
@@ -99,9 +103,9 @@ export function ShopCatalog({ products }: { products: Product[] }) {
                     type="button"
                     aria-pressed={active}
                     onClick={() => setSort(option.id)}
-                    className={`border px-3 py-1.5 text-xs transition-colors ${
+                    className={`shrink-0 whitespace-nowrap border px-3 py-2 text-xs transition-colors ${
                       active
-                        ? "border-forest bg-forest text-paper"
+                        ? "shop-filter-active"
                         : "border-line text-ink/75 hover:border-forest hover:text-forest"
                     }`}
                   >
@@ -109,13 +113,13 @@ export function ShopCatalog({ products }: { products: Product[] }) {
                   </button>
                 );
               })}
-            </div>
+            </div> */}
           </div>
 
           {visible.length === 0 ? (
             <p className="py-16 text-ink/60">No products in this category yet.</p>
           ) : (
-            <ul data-reveal className="grid gap-x-5 gap-y-10 pt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <ul data-reveal className="grid gap-x-4 gap-y-8 pt-5 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 sm:pt-6 lg:grid-cols-3 xl:grid-cols-4">
               {visible.map((product) => (
                 <li key={product.slug} className="min-w-0">
                   <button

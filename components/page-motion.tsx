@@ -2,6 +2,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText as GsapSplitText } from "gsap/SplitText";
 import { usePathname } from "next/navigation";
 import { ViewTransition, useLayoutEffect, useRef, type ReactNode } from "react";
 
@@ -19,10 +20,58 @@ export function PageMotion({ children }: { children: ReactNode }) {
     if (!container) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(GsapSplitText);
     const motion = gsap.matchMedia();
     const animations = new Map<Element, gsap.core.Tween>();
 
     motion.add("(prefers-reduced-motion: no-preference)", () => {
+      let active = true;
+      const splitTitles: GsapSplitText[] = [];
+
+      void document.fonts.ready.then(() => {
+        if (!active) return;
+
+        container.querySelectorAll<HTMLHeadingElement>("h2:not(.cafe-scroll-transition-title):not(.cafe-banner-message):not(.scroll-banner-message)")
+          .forEach((heading) => {
+            if (heading.closest("dialog, [data-split-ignore]")) return;
+
+            const split = new GsapSplitText(heading, {
+              type: "chars",
+              smartWrap: true,
+              charsClass: "split-char",
+              wordsClass: "split-word",
+              linesClass: "split-line",
+              reduceWhiteSpace: false,
+              aria: "auto",
+            });
+            splitTitles.push(split);
+
+            const gentlePage = Boolean(heading.closest(".cafe-page, .market-page"));
+            const animation = gsap.fromTo(split.chars, {
+              opacity: 0,
+              y: gentlePage ? 22 : 28,
+            }, {
+              opacity: 1,
+              y: 0,
+              duration: gentlePage ? 0.92 : 0.76,
+              stagger: gentlePage ? 0.025 : 0.02,
+              ease: gentlePage ? "power2.out" : "power3.out",
+              willChange: "transform, opacity",
+              clearProps: "transform,opacity,willChange",
+              force3D: true,
+              scrollTrigger: {
+                trigger: heading,
+                start: gentlePage ? "top 92%" : "top 88%",
+                once: true,
+                fastScrollEnd: true,
+              },
+            });
+            animations.set(heading, animation);
+          });
+
+        ScrollTrigger.refresh();
+      });
+
       // Measure the isolated SVG strokes once; never animate section dimensions.
       const lines = Array.from(container.querySelectorAll<SVGPathElement>("[data-line-draw]"))
         .map((path) => ({ path, length: path.getTotalLength(), section: path.closest("section") }));
@@ -55,6 +104,8 @@ export function PageMotion({ children }: { children: ReactNode }) {
       });
 
       function revealOnScroll(element: Element, index = 0) {
+        // Section headings use the staggered character reveal configured above.
+        if (element.matches("h2")) return;
         // Reveal each paragraph independently, without also moving its parent.
         if (element.matches("[data-story-copy]")) {
           Array.from(element.children).forEach((child, childIndex) => {
@@ -82,7 +133,7 @@ export function PageMotion({ children }: { children: ReactNode }) {
       });
 
       container.querySelectorAll("[data-ingredient-intro]").forEach((intro) => {
-        gsap.from(intro.querySelectorAll("h2, p, .btn"), {
+        gsap.from(intro.querySelectorAll("p, .btn"), {
           opacity: 0,
           y: 18,
           duration: 0.72,
@@ -107,7 +158,11 @@ export function PageMotion({ children }: { children: ReactNode }) {
         }));
       });
 
-      return () => animations.clear();
+      return () => {
+        active = false;
+        splitTitles.forEach((split) => split.revert());
+        animations.clear();
+      };
     }, root);
 
     motion.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Hero } from "@/components/hero";
 import { HomeScroll } from "@/components/home-scroll";
 import { HoursTable } from "@/components/hours-table";
@@ -130,11 +131,14 @@ export default function HomePage() {
                 </div>
               ))}
             </dl>
+            <Link href="/shop" className="btn mt-6">
+              Shop Online
+            </Link>
           </div>
         </div>
       </section>
 
-      <section aria-label="Enjoy our café" className="bg-paper">
+      <section aria-label="Enjoy our café" className="bg-[#1a2e26] text-[#f7f2e8]">
         <div className="mx-auto max-w-[76rem] px-5">
           <div className="relative left-1/2 w-screen -translate-x-1/2">
             <PortfolioScrollGrid
@@ -142,7 +146,7 @@ export default function HomePage() {
               images={[...cafeImages]}
               rows={4}
               backgroundTransition
-              className="cafe-scroll-gallery bg-paper text-ink"
+              className="cafe-scroll-gallery"
             />
           </div>
         </div>

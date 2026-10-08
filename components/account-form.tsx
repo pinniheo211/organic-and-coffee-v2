@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { LockKeyhole, UserRound } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 export function AccountForm({ mode }: { mode: "login" | "register" }) {
@@ -81,18 +82,28 @@ function Field({
   minLength?: number;
   required?: boolean;
 }) {
+  const Icon = name.toLowerCase().includes("password") ? LockKeyhole : UserRound;
+
   return (
     <label className="block text-sm" htmlFor={`account-${name}`}>
       {label}
-      <input
-        id={`account-${name}`}
-        name={name}
-        type={type}
-        autoComplete={autoComplete}
-        minLength={minLength}
-        required={required}
-        className="input"
-      />
+      <span className="relative mt-2 block">
+        <Icon
+          size={17}
+          strokeWidth={1.7}
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-forest/70"
+          aria-hidden="true"
+        />
+        <input
+          id={`account-${name}`}
+          name={name}
+          type={type}
+          autoComplete={autoComplete}
+          minLength={minLength}
+          required={required}
+          className="input input-with-icon"
+        />
+      </span>
     </label>
   );
 }

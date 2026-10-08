@@ -70,6 +70,10 @@ button:focus-visible {
   box-shadow: inset 0 0 0 1px currentColor;
 }
 
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
@@ -90,6 +94,55 @@ select:focus-visible {
 
 .skip-link:focus {
   transform: none;
+}
+
+.site-header [data-site-logo] { transition: opacity 180ms ease-out; }
+.site-header[data-site-intro-running="true"] [data-site-logo] { opacity: 0; }
+.site-wordmark { grid-column: 2; }
+.site-menu-trigger { grid-column: 1; grid-row: 1; }
+.site-primary-nav { grid-column: 1; grid-row: 1; }
+.site-header .site-header-actions { grid-column: 3; grid-row: 1; }
+.site-header .site-login-link { min-height: 2.25rem; padding: 0.55rem 0.8rem; font-size: 0.62rem; letter-spacing: 0.1em; white-space: nowrap; }
+
+@media (min-width: 640px) {
+  .site-header .site-login-link { min-height: 2.5rem; padding: 0.7rem 1rem; font-size: 0.68rem; letter-spacing: 0.12em; }
+}
+
+.site-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.site-intro-background {
+  position: absolute;
+  inset: 0;
+  background: var(--forest);
+}
+
+.site-intro-wordmark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: var(--paper);
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 10vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+}
+
+.site-intro-wordmark .split-parent { white-space: nowrap !important; }
+
+.split-char { display: inline-block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-intro { display: none; }
+  .site-header [data-site-logo] { opacity: 1 !important; }
 }
 
 .eyebrow {
@@ -128,6 +181,20 @@ select:focus-visible {
   background: #2f4234;
 }
 
+.basket-summary {
+  background-color: var(--forest);
+  color: var(--paper);
+}
+
+.basket-summary .basket-summary-action {
+  background: var(--paper);
+  color: var(--forest);
+}
+
+.basket-summary .basket-summary-action:hover {
+  background: var(--sage);
+}
+
 .btn-line {
   display: inline-flex;
   align-items: center;
@@ -161,9 +228,21 @@ select:focus-visible {
 .input {
   width: 100%;
   margin-top: 0.4rem;
-  border: 1px solid var(--line);
-  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--forest) 18%, transparent);
+  background: var(--sage);
   padding: 0.7rem 0.85rem;
+  color: var(--ink);
+  transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+
+.input:focus-visible {
+  border-color: var(--forest);
+  box-shadow: inset 0 -2px 0 var(--forest);
+}
+
+.input-with-icon {
+  margin-top: 0;
+  padding-left: 2.75rem;
 }
 
 .enquiry-form {
@@ -192,16 +271,16 @@ select:focus-visible {
 .enquiry-control {
   min-height: 3.25rem;
   margin-top: 0.55rem;
-  border-color: color-mix(in srgb, var(--ink) 14%, transparent);
-  background: #fff;
+  border-color: color-mix(in srgb, var(--forest) 18%, transparent);
+  background: var(--sage);
   padding: 0.85rem 0.95rem;
   color: var(--ink);
   transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
 }
 
 .enquiry-control:focus-visible {
-  border-color: var(--ember);
-  box-shadow: inset 0 -2px 0 var(--ember);
+  border-color: var(--forest);
+  box-shadow: inset 0 -2px 0 var(--forest);
 }
 
 textarea.enquiry-control {
@@ -228,13 +307,19 @@ textarea.enquiry-control {
   line-height: 1.55;
 }
 
-.shop-category-tabs {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+.shop-filter-active {
+  border-color: var(--forest);
+  background-color: var(--forest);
+  color: var(--paper);
 }
 
-.shop-category-tabs::-webkit-scrollbar {
-  display: none;
+.shop-sort-controls {
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x proximity;
+}
+
+.shop-sort-controls > button {
+  scroll-snap-align: start;
 }
 
 .mobile-menu {
@@ -848,12 +933,12 @@ textarea.enquiry-control {
   color: var(--ingredient-ink);
   transition: background-color 0.6s ease, color 0.6s ease;
 }
-.cafe-scroll-gallery { transition: --cafe-transition-ink 0.6s ease; }
+.cafe-scroll-gallery { --cafe-transition-base-ink: var(--ink); transition: --cafe-transition-ink 0.6s ease; }
 .cafe-scroll-transition-title {
   color: color-mix(
     in srgb,
-    var(--ink) calc(100% - var(--cafe-transition-progress, 0%)),
-    var(--cafe-transition-ink, var(--ink)) var(--cafe-transition-progress, 0%)
+    var(--cafe-transition-base-ink, var(--ink)) calc(100% - var(--cafe-transition-progress, 0%)),
+    var(--cafe-transition-ink, var(--cafe-transition-base-ink, var(--ink))) var(--cafe-transition-progress, 0%)
   );
 }
 .cafe-scroll-background-transition { position: absolute; inset: 0; z-index: 0; background-color: var(--cafe-transition-bg, #1a2e26); opacity: 0; pointer-events: none; transition: background-color 0.6s ease; }
@@ -892,7 +977,7 @@ textarea.enquiry-control {
 .ingredient-feature-copy h3 { font-size: clamp(2.15rem, 3.2vw, 3.15rem); line-height: 1.12; letter-spacing: -0.025em; text-wrap: balance; margin-top: 0.85rem; }
 .ingredient-feature-description { margin-top: 1.15rem; font-size: 1.125rem; line-height: 1.65; color: inherit; }
 .ingredient-feature-note { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid color-mix(in srgb, currentcolor 35%, transparent); color: inherit; font-size: 1rem; line-height: 1.6; }
-.ingredient-feature-link { display: inline-flex; align-items: center; gap: 0.7rem; min-height: 2.75rem; margin-top: 1.35rem; border-bottom: 1px solid currentColor; color: inherit; font-size: 1.0625rem; font-weight: 600; }
+.ingredient-feature-link { display: inline-flex; align-items: center; gap: 0.7rem; min-height: 2.75rem; margin-top: 1.35rem; color: inherit; font-size: 1.0625rem; font-weight: 600; }
 .ingredient-feature-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 @media (max-width: 1023px) {

@@ -5,6 +5,7 @@ import { CartProvider } from "@/components/cart-provider";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { PageMotion } from "@/components/page-motion";
+import { SiteIntro } from "@/components/site-intro";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <CartProvider>
+          <SiteIntro />
           <Header />
           <main id="content"><PageMotion>{children}</PageMotion></main>
           <Footer />
