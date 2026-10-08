@@ -1,7 +1,9 @@
 export interface CafeMenuItem {
   name: string;
   description?: string;
+  /** Illustrative price in AUD, formatted as a decimal string. */
   price: string;
+  imageSrc: string;
   dietary?: string[];
 }
 
@@ -14,131 +16,312 @@ export interface CafeMenuSection {
   items: CafeMenuItem[];
 }
 
-// Menu and indicative prices transcribed from the café's OrderUp ordering page.
+// Mock menu based on the supplied photos in public/assets/coffee.
+// Dish descriptions and prices are illustrative; confirm the live menu for orders.
+// Dietary labels are omitted because recipes cannot be verified from photos.
 export const cafeMenu: CafeMenuSection[] = [
   {
     id: "breakfast",
     title: "Breakfast",
     note: "All day",
-    imageSrc: "/assets/cafe-shakshouka.webp",
-    imageAlt: "Shakshouka served with toasted sourdough at the café",
+    imageSrc: "/assets/coffee/breakfast/1.jpg",
+    imageAlt: "Shakshouka",
     items: [
-      { name: "Shakshouka", description: "Egg baked in spicy capsicum and tomato sauce, with toasted sourdough. Vegan option with avocado, no egg.", price: "24.75", dietary: ["Vegan option"] },
-      { name: "Leo’s special", description: "Avocado, feta, kimchi, almond dukkah and chilli oil on rye toast.", price: "from 17.00" },
-      { name: "Mushroom confit", description: "Mushrooms and thyme on sourdough with hummus, pesto, pickled red onion and feta. Vegan pesto and cashew cheese available.", price: "from 21.00", dietary: ["Vegan option"] },
-      { name: "Bircher", description: "Organic oats, apple juice, biodynamic yoghurt, nuts, seasonal fruit and honey. Vegan option available.", price: "from 14.50", dietary: ["Vegan option"] },
-      { name: "Porridge", description: "Grains cooked in soy and almond milk, with banana, nut mix and honey.", price: "from 16.00", dietary: ["Vegan option", "GF option"] },
-      { name: "Muesli — natural", description: "House-made muesli with yoghurt, dried fruit compote and your choice of juice or milk.", price: "17.50", dietary: ["Vegan option", "GF option"] },
-      { name: "Muesli — toasted", description: "Toasted house-made muesli with yoghurt and your choice of milk or juice.", price: "17.50", dietary: ["Vegan option"] },
-      { name: "Berry compote", description: "Berries in red wine syrup with biodynamic yoghurt and nuts.", price: "14.50", dietary: ["Vegan option"] },
-      { name: "Toasted wholemeal fruit roll", description: "Locally made organic sourdough fruit roll, toasted with butter.", price: "8.50", dietary: ["Vegan option"] },
-      { name: "Crumpet", description: "Locally made in Bridgewater, with your choice of spread.", price: "8.50" },
-      { name: "Morning smoothie", description: "Organic yoghurt, banana, honey and wheatgerm.", price: "11.50", dietary: ["Vegan option"] },
-      { name: "Croissant", description: "A savoury or sweet croissant from the café cabinet.", price: "10.50" },
-      { name: "Toast", description: "Two slices of organic sourdough or sprouted dark rye, with butter and a condiment.", price: "9.00", dietary: ["Vegan option"] },
-    ],
+      {
+        name: "Shakshouka",
+        description: "Egg baked in a rich tomato and capsicum sauce, finished with herbs and served with toasted sourdough.",
+        price: "24.75",
+        imageSrc: "/assets/coffee/breakfast/1.jpg"
+      },
+      {
+        name: "Avocado & feta toast",
+        description: "Avocado and crumbled feta on rye toast, topped with leafy greens and a sprinkle of dukkah.",
+        price: "17.00",
+        imageSrc: "/assets/coffee/breakfast/2.jpg"
+      },
+      {
+        name: "Mushroom confit",
+        description: "Roasted mushrooms on sourdough with creamy feta, rocket and pickled red onion.",
+        price: "21.00",
+        imageSrc: "/assets/coffee/breakfast/3.jpg"
+      },
+      {
+        name: "Toasted muesli bowl",
+        description: "Toasted muesli with yoghurt, fresh strawberries, coconut flakes and nuts.",
+        price: "17.50",
+        imageSrc: "/assets/coffee/breakfast/4.jpg"
+      },
+      {
+        name: "Banana & coconut porridge",
+        description: "A warming breakfast bowl topped with banana, coconut flakes, nuts and rose petals.",
+        price: "16.00",
+        imageSrc: "/assets/coffee/breakfast/5.jpg"
+      },
+      {
+        name: "Sourdough toast",
+        description: "Two slices of toasted sourdough with butter and a side of fruit preserve.",
+        price: "9.00",
+        imageSrc: "/assets/coffee/breakfast/6.jpg"
+      }
+    ]
   },
   {
     id: "lunch",
     title: "Lunch",
-    note: "Available all day; salad bowl from 11am",
-    imageSrc: "/assets/cafe-salad-bowl-png.webp",
-    imageAlt: "The café's salad bowl with roasted pumpkin and fresh greens",
+    note: "All day; salad bowl from 11am",
+    imageSrc: "/assets/coffee/lunch/1.jpg",
+    imageAlt: "Roast pumpkin salad bowl",
     items: [
-      { name: "Soup: mushroom & lentil", description: "Daily soup served with bread.", price: "from 14.50", dietary: ["DF", "GF", "NF", "Vegan"] },
-      { name: "Soup: red split lentil & zucchini", description: "Daily soup served with bread.", price: "from 14.50", dietary: ["DF", "GF", "NF", "Vegan"] },
-      { name: "Salad bowl", description: "Two fresh salads, a roasted Jap pumpkin wedge and bread.", price: "22.50", dietary: ["Vegan option", "GF option"] },
-      { name: "Organic penne with lentil bolognese", description: "Pasta with the chef’s daily selection.", price: "from 23.00", dietary: ["NF", "Vegetarian"] },
-      { name: "Tasting platter for one", description: "Hummus, pickled vegetables, pesto, cheese, olives, crudités and house-made bread crisps.", price: "22.00", dietary: ["Vegan option"] },
-      { name: "Tasting platter for two", description: "A larger platter with wild-caught smoked salmon, alongside hummus, pickles, pesto, cheese, olives and bread crisps.", price: "45.00", dietary: ["Vegan option"] },
-      { name: "Bruschetta #1", description: "House-made Provençale sauce with olives and parmesan. Vegan option with eggplant, no parmesan.", price: "from 13.00", dietary: ["Vegan option"] },
-      { name: "Bruschetta #2", description: "Haloumi with fresh house-made salsa. Vegan option with avocado, no haloumi.", price: "from 17.00", dietary: ["Vegan option"] },
-      { name: "Bruschetta #3", description: "Roast pumpkin, capsicum and feta. Vegan option with olives, no feta.", price: "from 17.00", dietary: ["Vegan option"] },
-      { name: "Focaccia #1", description: "Leg ham with chutney, pickled onion and cheddar.", price: "from 19.00" },
-      { name: "Focaccia #2", description: "Roasted eggplant with tahini sauce and tabouli.", price: "from 17.00", dietary: ["Vegan"] },
-      { name: "Focaccia #3", description: "Basil pesto, tomato, olives and bocconcini.", price: "from 17.00", dietary: ["Vegan option"] },
-      { name: "Focaccia #4", description: "Smoked salmon, cream cheese, capers, horseradish, pickled red onion and rocket.", price: "from 22.50" },
-      { name: "Roast vegetable wrap", description: "Mountain bread with vegan pesto, roast vegetables, carrot, sprouts and lettuce.", price: "17.00", dietary: ["Vegan"] },
-      { name: "Croissant", price: "10.50" },
-      { name: "Scone", description: "House-made with organic ingredients.", price: "8.50" },
-    ],
+      {
+        name: "Roast pumpkin salad bowl",
+        description: "A generous wedge of roasted pumpkin with a colourful selection of seasonal salads.",
+        price: "22.50",
+        imageSrc: "/assets/coffee/lunch/1.jpg"
+      },
+      {
+        name: "Market tasting platter",
+        description: "A selection of dips, olives, cheese, crisp vegetables and toasted bread for grazing.",
+        price: "22.00",
+        imageSrc: "/assets/coffee/lunch/2.jpg"
+      },
+      {
+        name: "Tomato & olive bruschetta",
+        description: "Toasted sourdough with rich tomato sauce, olives, grated parmesan and fresh herbs.",
+        price: "13.00",
+        imageSrc: "/assets/coffee/lunch/3.jpg"
+      },
+      {
+        name: "Haloumi & salsa bruschetta",
+        description: "Golden grilled haloumi on sourdough with fresh tomato salsa and a lemon wedge.",
+        price: "17.00",
+        imageSrc: "/assets/coffee/lunch/4.jpg"
+      },
+      {
+        name: "Pumpkin & feta bruschetta",
+        description: "Roast pumpkin and capsicum on toast, finished with crumbled feta and herbs.",
+        price: "17.00",
+        imageSrc: "/assets/coffee/lunch/5.jpg"
+      },
+      {
+        name: "Ham & cheddar focaccia",
+        description: "A seeded focaccia filled with ham, cheddar, chutney and pickled onion, with leafy greens.",
+        price: "19.00",
+        imageSrc: "/assets/coffee/lunch/6.jpg"
+      },
+      {
+        name: "Roast eggplant focaccia",
+        description: "Roasted eggplant, tahini sauce and fresh tabouli in a seeded focaccia, with a side salad.",
+        price: "17.00",
+        imageSrc: "/assets/coffee/lunch/7.jpg"
+      },
+      {
+        name: "Tomato & bocconcini focaccia",
+        description: "Basil pesto, sliced tomato, olives and bocconcini in a toasted focaccia.",
+        price: "17.00",
+        imageSrc: "/assets/coffee/lunch/8.jpg"
+      },
+      {
+        name: "Smoked salmon focaccia",
+        description: "Smoked salmon, cream cheese, leafy greens and pickled red onion in a seeded focaccia.",
+        price: "22.50",
+        imageSrc: "/assets/coffee/lunch/9.jpg"
+      },
+      {
+        name: "Roast vegetable wrap",
+        description: "A toasted wrap filled with roast vegetables, grated carrot and fresh greens, with salad on the side.",
+        price: "17.00",
+        imageSrc: "/assets/coffee/lunch/10.jpg"
+      },
+      {
+        name: "Scone with jam & cream",
+        description: "A freshly baked scone dusted with icing sugar, served with berry jam and cream.",
+        price: "8.50",
+        imageSrc: "/assets/coffee/lunch/11.jpg"
+      }
+    ]
   },
   {
     id: "cakes",
-    title: "Muffins & cakes",
-    note: "Cabinet selection changes; some items may not be available every day.",
-    imageSrc: "/assets/cafe-almond-biscuit.webp",
-    imageAlt: "Almond biscuit from the café cabinet",
+    title: "Cakes & sweet treats",
+    note: "From the café cabinet",
+    imageSrc: "/assets/coffee/cake/1.png",
+    imageAlt: "Almond biscuit",
     items: [
-      { name: "Pear, walnut & sultana muffin", price: "6.50", dietary: ["Vegan"] },
-      { name: "Almond biscuit", price: "4.25", dietary: ["GF"] },
-      { name: "Almond & coconut", description: "Served warm with cream.", price: "8.50" },
-      { name: "Apple crumble cake", description: "Served warm with cream.", price: "8.50", dietary: ["GF"] },
-      { name: "Banana bread", description: "Served warm with butter.", price: "8.50", dietary: ["Vegan"] },
-      { name: "Blueberry sour cream cake", price: "6.75" },
-      { name: "Raspberry brownie", description: "Chocolate and raspberries; served warm with cream.", price: "7.50", dietary: ["GF"] },
-      { name: "Berry & almond cookies", price: "5.50", dietary: ["DF", "GF", "Vegan"] },
-      { name: "Cacao truffles", price: "4.50", dietary: ["DF", "GF", "Vegan"] },
-      { name: "Hemp seed truffles", price: "4.50", dietary: ["DF", "GF", "Raw", "Vegan"] },
-      { name: "Kataifi", description: "Greek custard pastry with whipped cream.", price: "11.50" },
-      { name: "Scone", description: "House-made with organic ingredients.", price: "8.50" },
-      { name: "Sicilian apple cake", description: "Served warm with cream.", price: "7.75" },
-      { name: "YoYo", price: "5.50" },
-    ],
+      {
+        name: "Almond biscuit",
+        description: "A golden biscuit topped with flaked almonds, ready to pair with your coffee.",
+        price: "4.25",
+        imageSrc: "/assets/coffee/cake/1.png"
+      },
+      {
+        name: "Apple crumble cake",
+        description: "A slice of apple cake with a crumbly topping, dusted with icing sugar and served with cream.",
+        price: "8.50",
+        imageSrc: "/assets/coffee/cake/2.jpg"
+      },
+      {
+        name: "Banana bread",
+        description: "A thick slice of banana bread, lightly warmed and served with butter.",
+        price: "8.50",
+        imageSrc: "/assets/coffee/cake/3.jpg"
+      },
+      {
+        name: "Classic cream tea scone",
+        description: "A soft scone with a dusting of icing sugar, berry jam and a generous spoonful of cream.",
+        price: "8.50",
+        imageSrc: "/assets/coffee/cake/4.jpg"
+      },
+      {
+        name: "Chocolate caramel slice",
+        description: "A rich chocolate slice with a smooth caramel topping, served with cream.",
+        price: "8.50",
+        imageSrc: "/assets/coffee/cake/5.jpg"
+      },
+      {
+        name: "YoYo biscuit",
+        description: "A buttery sandwich biscuit with a creamy filling and a dusting of icing sugar.",
+        price: "5.50",
+        imageSrc: "/assets/coffee/cake/6.jpg"
+      }
+    ]
   },
   {
     id: "coffee",
     title: "Coffee & warm drinks",
-    imageSrc: "/assets/cafe-flat-white.webp",
-    imageAlt: "Organic flat white coffee with latte art",
+    imageSrc: "/assets/coffee/cafe/1.jpg",
+    imageAlt: "Flat white",
     items: [
-      { name: "Flat white", price: "5.50" }, { name: "Latte", price: "5.50" },
-      { name: "Piccolo", price: "4.75" }, { name: "Cappuccino", price: "5.50" },
-      { name: "Long black", price: "4.75" }, { name: "Batch brew", description: "350ml, with refill.", price: "6.00" },
-      { name: "Espresso", price: "4.75" }, { name: "Macchiato", price: "4.75" },
-      { name: "Vienna", price: "6.50" }, { name: "Mocha", price: "6.50" },
-      { name: "Babycino", price: "3.00" }, { name: "Chai latte", price: "6.00" },
-      { name: "Pot chai", price: "8.00" }, { name: "Hot chocolate", price: "5.50" },
-      { name: "Premium drinking chocolate", price: "6.00" },
-      { name: "Carob, dandelion, barley or chicory", description: "A caffeine-free alternative.", price: "5.50" },
-      { name: "Pot of tea", description: "English Breakfast, Earl Grey, Darjeeling, Sencha Green, Jasmine Pearls, Rooibos, Peppermint, Lemongrass or Chamomile.", price: "5.50" },
-      { name: "Matcha milk", price: "6.50" }, { name: "Golden milk", price: "6.00" },
-      { name: "Hot spicy apple", price: "7.00" },
-      { name: "Hot lemon & honey", description: "Add ginger for 50¢.", price: "5.50" },
-    ],
-  },
-  {
-    id: "smoothies",
-    title: "Smoothies",
-    imageSrc: "/assets/cafe-smoothie.webp",
-    imageAlt: "Fresh smoothie served at the café",
-    items: [
-      { name: "Acai smoothie", description: "OM creation.", price: "11.50" },
-      { name: "Groovy smoothie", description: "OM creation.", price: "11.50" },
-      { name: "Green smoothie", description: "OM creation.", price: "11.50" },
-      { name: "Morning smoothie", description: "Organic yoghurt, banana, honey and wheatgerm. Vegan option available.", price: "11.50", dietary: ["Vegan option"] },
-      { name: "Fruit whip", description: "OM creation.", price: "11.50" },
-    ],
+      {
+        name: "Flat white",
+        description: "Espresso with silky steamed milk and a fine layer of microfoam.",
+        price: "5.50",
+        imageSrc: "/assets/coffee/cafe/1.jpg"
+      },
+      {
+        name: "Latte",
+        description: "A smooth espresso and steamed milk, served in a glass with latte art.",
+        price: "5.50",
+        imageSrc: "/assets/coffee/cafe/2.jpg"
+      },
+      {
+        name: "Piccolo",
+        description: "A small espresso-based coffee with steamed milk, served in a short glass.",
+        price: "4.75",
+        imageSrc: "/assets/coffee/cafe/3.jpg"
+      },
+      {
+        name: "Long black",
+        description: "Espresso poured over hot water for a full-flavoured black coffee.",
+        price: "4.75",
+        imageSrc: "/assets/coffee/cafe/4.jpg"
+      },
+      {
+        name: "Espresso",
+        description: "A short, concentrated coffee with a golden crema.",
+        price: "4.75",
+        imageSrc: "/assets/coffee/cafe/5.jpg"
+      },
+      {
+        name: "Macchiato",
+        description: "Espresso marked with a little steamed milk, served in a small glass.",
+        price: "4.75",
+        imageSrc: "/assets/coffee/cafe/6.jpg"
+      },
+      {
+        name: "Vienna coffee",
+        description: "A black coffee served with a side of whipped cream and a dusting of chocolate.",
+        price: "6.50",
+        imageSrc: "/assets/coffee/cafe/7.jpg"
+      },
+      {
+        name: "Chai latte",
+        description: "Spiced chai with steamed milk and a light cinnamon dusting.",
+        price: "6.00",
+        imageSrc: "/assets/coffee/cafe/8.jpg"
+      },
+      {
+        name: "Pot chai",
+        description: "Spiced milk chai served in a pot with a strainer and honey on the side.",
+        price: "8.00",
+        imageSrc: "/assets/coffee/cafe/9.jpg"
+      },
+      {
+        name: "Hot chocolate",
+        description: "A comforting cup of chocolate and steamed milk, finished with cocoa.",
+        price: "5.50",
+        imageSrc: "/assets/coffee/cafe/10.jpg"
+      },
+      {
+        name: "Premium drinking chocolate",
+        description: "A rich drinking chocolate with steamed milk and a generous cocoa topping.",
+        price: "6.00",
+        imageSrc: "/assets/coffee/cafe/11.jpg"
+      },
+      {
+        name: "Pot of tea",
+        description: "Your choice of tea, served in a teapot with milk on the side.",
+        price: "5.50",
+        imageSrc: "/assets/coffee/cafe/12.jpg"
+      },
+      {
+        name: "Golden milk",
+        description: "A gently spiced turmeric milk with a foamy top, served warm in a glass.",
+        price: "6.00",
+        imageSrc: "/assets/coffee/cafe/13.jpg"
+      }
+    ]
   },
   {
     id: "cold-drinks",
     title: "Cold drinks",
-    imageSrc: "/assets/cafe-cold-juice.webp",
-    imageAlt: "Three freshly made juices in red, orange and green",
+    note: "Juices, smoothies & iced favourites",
+    imageSrc: "/assets/coffee/drink/1.jpg",
+    imageAlt: "Cold-pressed juice",
     items: [
-      { name: "Cold-pressed juice", price: "from 10.00" },
-      { name: "Orange juice", price: "from 9.00" },
-      { name: "Apple juice", price: "6.50" },
-      { name: "Smoothie", price: "10.00" }, { name: "Lassi", price: "10.00" },
-      { name: "Iced coffee", price: "10.00" }, { name: "Iced chocolate", price: "10.00" },
-      { name: "Iced mocha", price: "10.00" },
-      { name: "Iced chai", description: "Blended smoothie style.", price: "10.00" },
-      { name: "Spider", price: "10.00" },
-      { name: "Sparkling water", price: "from 4.50" },
-      { name: "Lemon cordial", price: "5.50" },
-      { name: "Organic bottled cola, lemonade or ginger beer", price: "8.00" },
-    ],
-  },
+      {
+        name: "Cold-pressed juice",
+        description: "A glass of fresh fruit and vegetable juice; choose a seasonal red, orange or green blend.",
+        price: "10.00",
+        imageSrc: "/assets/coffee/drink/1.jpg"
+      },
+      {
+        name: "Orange juice",
+        description: "Fresh orange juice, served chilled with a slice of citrus.",
+        price: "9.00",
+        imageSrc: "/assets/coffee/drink/2.jpg"
+      },
+      {
+        name: "Apple juice",
+        description: "Refreshing apple juice, served chilled with a crisp apple garnish.",
+        price: "6.50",
+        imageSrc: "/assets/coffee/drink/3.jpg"
+      },
+      {
+        name: "Mango smoothie",
+        description: "A creamy mango smoothie, blended and served chilled.",
+        price: "11.50",
+        imageSrc: "/assets/coffee/drink/4.jpg"
+      },
+      {
+        name: "Iced coffee",
+        description: "Chilled coffee with milk and a creamy topping, served in a tall glass.",
+        price: "10.00",
+        imageSrc: "/assets/coffee/drink/5.jpg"
+      },
+      {
+        name: "Iced chocolate",
+        description: "Chocolate and cold milk with a creamy topping and a fresh strawberry garnish.",
+        price: "10.00",
+        imageSrc: "/assets/coffee/drink/6.jpg"
+      },
+      {
+        name: "Berry lemonade spider",
+        description: "A fizzy lemonade float with berries and ice cream, finished with a fresh strawberry.",
+        price: "10.00",
+        imageSrc: "/assets/coffee/drink/7.jpg"
+      }
+    ]
+  }
 ];
 
 export const orderUpMenuUrl = "https://theorganicmarketandcafe.orderup.com.au/stores/the-organic-market-cafe";

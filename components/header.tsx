@@ -71,7 +71,7 @@ export function Header({ isAuthenticated = false }: { isAuthenticated?: boolean 
               </svg>
             </Link>
           ) : (
-            <Link href="/login" className="btn site-login-link">Login</Link>
+            <Link href="/shop" className="btn site-login-link">Shop</Link>
           )}
           <Link href="/shop/basket" className="relative hidden size-9 place-items-center md:grid md:size-11" aria-label={basketLabel}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">

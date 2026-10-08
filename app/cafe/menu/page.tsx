@@ -21,9 +21,7 @@ export default function CafeMenuPage() {
       </PageHero>
 
       <div className="mx-auto mt-9 max-w-[76rem] px-5">
-        <div className="sticky top-[var(--header-h)] z-40 -mx-5 border-y border-line bg-paper px-5 py-3.5 ">
-          <CafeMenuNav sections={cafeMenu} />
-        </div>
+        <CafeMenuNav sections={cafeMenu} />
 
         <div className="grid gap-12 py-12 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-20 md:py-16">
           <aside data-reveal-group className="h-fit md:sticky md:top-24">

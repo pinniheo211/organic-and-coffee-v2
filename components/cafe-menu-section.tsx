@@ -11,8 +11,8 @@ export function CafeMenuSectionGrid({ section }: { section: CafeMenuSection }) {
         <li key={item.name} className="flex min-w-0 flex-col border-t border-line py-4">
           <div className="relative mb-3 aspect-[4/3] overflow-hidden bg-sage">
             <Image
-              src={section.imageSrc}
-              alt=""
+              src={item.imageSrc}
+              alt={item.name}
               fill
               sizes="(min-width: 1280px) 25rem, (min-width: 640px) 50vw, 100vw"
               className="object-cover"

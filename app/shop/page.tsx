@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Shop online",
   description:
-    "A preview of the Organic Market online shop: produce, bulk foods, grocery, drinks and personal care, for delivery or click and collect.",
+    "A preview of the Organic Market online shop: fruit, vegetables, chilled and frozen foods, bakery and pantry staples, and drinks, for delivery or click and collect.",
 };
 
 export default function ShopPage() {
