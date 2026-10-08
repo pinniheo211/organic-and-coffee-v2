@@ -1154,6 +1154,9 @@ textarea.enquiry-control {
   animation: product-panel-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+.basket-toast { animation: basket-toast-enter 220ms ease-out both; }
+.basket-toast.is-exiting { animation: basket-toast-exit 220ms ease-in both; }
+
 @keyframes product-backdrop-in {
   from {
     opacity: 0;
@@ -1176,9 +1179,21 @@ textarea.enquiry-control {
   }
 }
 
+@keyframes basket-toast-enter {
+  from { opacity: 0; transform: translateY(0.75rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes basket-toast-exit {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(0.75rem); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .product-dialog[open]::backdrop,
   .product-modal-panel {
     animation: none;
   }
+  .basket-toast,
+  .basket-toast.is-exiting { animation: none; }
 }

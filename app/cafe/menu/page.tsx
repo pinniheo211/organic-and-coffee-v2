@@ -79,12 +79,10 @@ export default function CafeMenuPage() {
               at the café.
             </p>
             <div data-reveal className="mt-6 flex flex-wrap gap-3">
-              <a className="btn" href={orderUpMenuUrl} target="_blank" rel="noreferrer">
-                Order from the café
-              </a>
-              <Link className="btn-line" href="/shop">
+              <a className="btn" href="/shop" target="_blank" rel="noreferrer">
                 Shop online
-              </Link>
+              </a>
+             
             </div>
           </div>
         </div>

@@ -16,18 +16,43 @@ const sortOptions = [
 
 type SortOrder = (typeof sortOptions)[number]["id"];
 
+function BasketToast({ message, exiting }: { message: string; exiting: boolean }) {
+  return (
+    <div
+      className={`basket-toast fixed bottom-4 right-4 z-[60] flex w-[calc(100vw-2rem)] max-w-md items-center justify-between gap-4 p-4 text-paper shadow-lg sm:bottom-6 sm:right-6${exiting ? " is-exiting" : ""}`}
+      style={{ backgroundColor: "var(--forest)" }}
+      role="status"
+      aria-live="polite"
+    >
+      <span>{message}</span>
+      <Link className="shrink-0 underline underline-offset-4" href="/shop/basket">
+        View basket
+      </Link>
+    </div>
+  );
+}
+
 export function ShopCatalog({ products }: { products: Product[] }) {
   const { add } = useCart();
   const [category, setCategory] = useState<Category | "All">("All");
   const [sort, setSort] = useState<SortOrder>("featured");
   const [selected, setSelected] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
+  const [notification, setNotification] = useState<string | null>(null);
+  const [notificationId, setNotificationId] = useState(0);
+  const [notificationExiting, setNotificationExiting] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const notificationTimeout = useRef<number | null>(null);
+  const notificationExitTimeout = useRef<number | null>(null);
 
   useEffect(() => {
     if (selected && dialogRef.current && !dialogRef.current.open) dialogRef.current.showModal();
   }, [selected]);
+
+  useEffect(() => () => {
+    if (notificationTimeout.current !== null) window.clearTimeout(notificationTimeout.current);
+    if (notificationExitTimeout.current !== null) window.clearTimeout(notificationExitTimeout.current);
+  }, []);
 
   const visible = useMemo(() => {
     const filtered = products.filter((product) => category === "All" || product.category === category);
@@ -42,7 +67,6 @@ export function ShopCatalog({ products }: { products: Product[] }) {
   function openProduct(product: Product) {
     setSelected(product);
     setQuantity(1);
-    setAdded(false);
   }
 
   function closeProduct() {
@@ -53,7 +77,13 @@ export function ShopCatalog({ products }: { products: Product[] }) {
   function addSelected() {
     if (!selected) return;
     add(selected.slug, quantity);
-    setAdded(true);
+    setNotification(`Added to basket: ${quantity} × ${selected.name}`);
+    setNotificationId((current) => current + 1);
+    setNotificationExiting(false);
+    if (notificationTimeout.current !== null) window.clearTimeout(notificationTimeout.current);
+    if (notificationExitTimeout.current !== null) window.clearTimeout(notificationExitTimeout.current);
+    notificationTimeout.current = window.setTimeout(() => setNotificationExiting(true), 4780);
+    notificationExitTimeout.current = window.setTimeout(() => setNotification(null), 5000);
   }
 
   return (
@@ -212,17 +242,18 @@ export function ShopCatalog({ products }: { products: Product[] }) {
                     type="button"
                     className="grid size-11 place-items-center disabled:opacity-40"
                     aria-label={`Decrease quantity of ${selected.name}`}
-                    disabled={quantity <= 1 || added}
-                    onClick={() => setQuantity((current) => Math.max(1, current - 1))}
+                    disabled={quantity <= 1}
+                    onClick={() => {
+                      setQuantity((current) => Math.max(1, current - 1));
+                    }}
                   >
                     <Minus size={16} aria-hidden="true" />
                   </button>
                   <output className="w-10 text-center tabular-nums" aria-live="polite">{quantity}</output>
                   <button
                     type="button"
-                    className="grid size-11 place-items-center disabled:opacity-40"
+                    className="grid size-11 place-items-center"
                     aria-label={`Increase quantity of ${selected.name}`}
-                    disabled={added}
                     onClick={() => setQuantity((current) => current + 1)}
                   >
                     <Plus size={16} aria-hidden="true" />
@@ -233,17 +264,16 @@ export function ShopCatalog({ products }: { products: Product[] }) {
                 <span className="text-ink/60">Subtotal</span>
                 <span className="font-medium tabular-nums">{formatPrice(selected.price * quantity)}</span>
               </p>
-              <button type="button" className="btn mt-5 w-full disabled:opacity-50" onClick={addSelected} disabled={added}>
-                {added ? "Added to basket" : `Add ${quantity} to basket`}
+              <button type="button" className="btn mt-5 w-full" onClick={addSelected}>
+                Add {quantity} to basket
               </button>
-              {added ? (
-                <p className="mt-4 text-center" role="status" aria-live="polite">
-                  <Link className="link" href="/shop/basket">View basket</Link>
-                </p>
-              ) : null}
             </div>
           </article>
+          {notification ? <BasketToast key={notificationId} message={notification} exiting={notificationExiting} /> : null}
         </dialog>
+      ) : null}
+      {!selected && notification ? (
+        <BasketToast key={notificationId} message={notification} exiting={notificationExiting} />
       ) : null}
     </div>
   );
