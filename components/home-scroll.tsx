@@ -34,7 +34,7 @@ export function HomeScroll({ children }: { children: ReactNode }) {
         );
       }
 
-      const cafeGallery = root.current?.querySelector(".cafe-scroll-gallery");
+      const cafeGallery = root.current?.querySelector<HTMLElement>(".cafe-scroll-gallery");
       const cafeImages = cafeGallery?.querySelectorAll<HTMLElement>("[data-cafe-scroll-image]");
       cafeImages?.forEach((image) => {
         gsap.fromTo(image, { y: 28 }, {
