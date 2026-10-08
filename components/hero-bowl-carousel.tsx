@@ -189,7 +189,7 @@ export function HeroBowlCarousel({ captionRef }: { captionRef: RefObject<HTMLPar
               height={800}
               preload={index === CENTER}
               loading={index === CENTER ? undefined : "eager"}
-              sizes="(min-width: 1104px) 640px, (min-width: 768px) 58vw, (min-width: 469px) 384px, 82vw"
+              sizes="(min-width: 1104px) 640px, (min-width: 768px) 58vw, (min-width: 498px) 448px, 90vw"
               className="h-auto w-full object-contain"
             />
           </div>

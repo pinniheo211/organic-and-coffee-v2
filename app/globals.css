@@ -669,7 +669,7 @@ textarea.enquiry-control {
 }
 
 @media (max-width: 767px) {
-  .hero-bowl-stage { --bowl-size: min(82vw, 24rem); }
+  .hero-bowl-stage { --bowl-size: min(90vw, 28rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
