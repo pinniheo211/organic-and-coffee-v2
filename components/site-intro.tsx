@@ -4,6 +4,14 @@ import gsap from "gsap";
 import { useLayoutEffect, useRef, useState } from "react";
 import { SplitText } from "@/components/ui/split-text";
 
+function glyphBox(element: HTMLElement) {
+  const range = document.createRange();
+  range.selectNodeContents(element);
+  const rect = range.getBoundingClientRect();
+  range.detach();
+  return rect;
+}
+
 export function SiteIntro() {
   const background = useRef<HTMLDivElement>(null);
   const wordmark = useRef<HTMLDivElement>(null);
@@ -23,16 +31,13 @@ export function SiteIntro() {
     }
 
     header.dataset.siteIntroRunning = "true";
+    gsap.set(title, { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 1, transformOrigin: "center center" });
 
     void document.fonts.ready.then(() => {
       if (cancelled) return;
 
-      const start = title.getBoundingClientRect();
-      const target = logo.getBoundingClientRect();
-      const x = target.left + target.width / 2 - (start.left + start.width / 2);
-      const y = target.top + target.height / 2 - (start.top + start.height / 2);
-      const scale = target.width / start.width;
       const ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#171717";
+      const flight = { x: 0, y: 0, scale: 1 };
 
       gsap.set([title, backdrop], { willChange: "transform,opacity" });
 
@@ -43,11 +48,34 @@ export function SiteIntro() {
         },
       });
 
+      // Solve the final transform against the live logo so scale does not
+      // carry the wordmark past the header and then snap back.
+      timeline.call(() => {
+        const start = glyphBox(title);
+        const target = glyphBox(logo);
+        const scale = start.width ? target.width / start.width : 1;
+        let x = 0;
+        let y = 0;
+        for (let i = 0; i < 4; i += 1) {
+          gsap.set(title, { x, y, scale });
+          const landed = glyphBox(title);
+          const dx = target.left + target.width / 2 - (landed.left + landed.width / 2);
+          const dy = target.top + target.height / 2 - (landed.top + landed.height / 2);
+          x += dx;
+          y += dy;
+          if (Math.abs(dx) < 0.4 && Math.abs(dy) < 0.4) break;
+        }
+        gsap.set(title, { x: 0, y: 0, scale: 1 });
+        flight.x = x;
+        flight.y = y;
+        flight.scale = scale;
+      }, undefined, 1.2);
+
       timeline
         .to(title, {
-          x,
-          y,
-          scale,
+          x: () => flight.x,
+          y: () => flight.y,
+          scale: () => flight.scale,
           color: ink,
           duration: 1.42,
           ease: "power2.inOut",
@@ -85,7 +113,7 @@ export function SiteIntro() {
       <div ref={wordmark} className="site-intro-wordmark">
         <SplitText
           text="Organic Market"
-          className="site-intro-split pb-10"
+          className="site-intro-split"
           tag="span"
           animateOnScroll={false}
           delay={24}

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { SectionLine } from "@/components/section-line";
-import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
 import { ScrollImageHero } from "@/components/scroll-image-hero";
+import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
+import { ImageTrail } from "@/components/ui/image-trail";
 
 export const metadata: Metadata = {
   title: "Market",
@@ -20,6 +21,8 @@ const marketGallery = [
   { src: "/assets/shop.webp", alt: "The Organic Market in Stirling" },
 ] as const;
 
+const marketTrailItems = marketGallery.map((image) => image.src);
+
 export default function MarketPage() {
   return (
     <article data-story-motion className="market-page">
@@ -37,7 +40,7 @@ export default function MarketPage() {
 
       <section aria-labelledby="market-ranges-title" className="market-ranges-section section-ornament">
         <SectionLine className="section-line-market" />
-        <div className="mx-auto max-w-[76rem] px-5 py-16 md:py-24">
+        <div className="market-ranges-pad mx-auto max-w-[76rem] px-5 py-16 md:py-24">
           <div className="market-section-heading" data-reveal>
             <div>
               <p className="eyebrow">A little of everything, chosen well</p>
@@ -45,7 +48,7 @@ export default function MarketPage() {
                 Good food starts with good ingredients
               </h2>
             </div>
-            <div className="max-w-md">
+            <div className="market-section-copy max-w-md">
               <p className="text-sm leading-relaxed text-pretty text-ink/70 md:text-base">
                 Our shelves bring together the things you cook with every day and the local discoveries
                 that make a meal memorable.
@@ -53,8 +56,12 @@ export default function MarketPage() {
             </div>
           </div>
 
-          <ImageAutoSlider images={[...marketGallery]} className="mt-10 md:mt-14" />
-
+          <div className="market-ranges-slider">
+            <ImageAutoSlider images={[...marketGallery]} className="mt-10 md:mt-14" />
+          </div>
+        </div>
+        <div className="market-ingredient-trail">
+          <ImageTrail items={marketTrailItems} variant={1} />
         </div>
       </section>
 

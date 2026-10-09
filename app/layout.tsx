@@ -52,7 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <CartProvider>
           <SiteIntro />
           <Header />
-          <main id="content"><PageMotion>{children}</PageMotion></main>
+          <main id="content" tabIndex={-1}><PageMotion>{children}</PageMotion></main>
           <Footer />
         </CartProvider>
       </body>

@@ -111,8 +111,11 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
   useLayoutEffect(() => () => dismiss(), [dismiss]);
 
   const onNavigate = () => {
-    // Release the old scroll position synchronously before Link navigates.
-    dismiss();
+    // Drop the scroll lock without restoring the page we are leaving.
+    // Restoring it lands the next page at the footer.
+    dismiss(false);
+    void document.body.offsetHeight;
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" });
     onClose();
   };
 

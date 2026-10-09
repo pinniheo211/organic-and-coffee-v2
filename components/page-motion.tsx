@@ -19,6 +19,13 @@ export function PageMotion({ children }: { children: ReactNode }) {
     const container = root.current;
     if (!container) return;
 
+    // Header and footer links stay mounted across pages. Mobile browsers
+    // scroll a focused footer link back into view after the route changes.
+    const active = document.activeElement;
+    if (active instanceof HTMLElement && active.closest(".site-footer, .site-header")) {
+      document.getElementById("content")?.focus({ preventScroll: true });
+    }
+
     gsap.registerPlugin(ScrollTrigger);
     gsap.registerPlugin(GsapSplitText);
     const motion = gsap.matchMedia();
